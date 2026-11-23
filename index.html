@@ -155,26 +155,26 @@ header{gap:8px 16px}.stats{gap:16px;order:3;width:100%;justify-content:space-bet
 </header>
 
 <section class="stage" id="stage">
-<svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<svg id="scene" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0a1230"/><stop offset=".65" stop-color="#1a2f62"/><stop offset="1" stop-color="#2b4a86"/></linearGradient>
     <radialGradient id="moonG"><stop offset=".55" stop-color="#f6eedc"/><stop offset="1" stop-color="#e9dcc0"/></radialGradient>
     <radialGradient id="halo"><stop offset="0" stop-color="#f6eedc" stop-opacity=".28"/><stop offset="1" stop-color="#f6eedc" stop-opacity="0"/></radialGradient>
     <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1c3670"/><stop offset="1" stop-color="#0c1532"/></linearGradient>
     <linearGradient id="wood" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8a5a36"/><stop offset="1" stop-color="#4a2c18"/></linearGradient>
-    <path id="wv" d="M0 0 q30 -14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+    <path id="wv" d="M-1200 0 q30 -14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
     <g id="cloud"><path d="M0 0 h150 a18 18 0 0 0 -18 -18 h-34 a22 22 0 0 0 -40 -6 a16 16 0 0 0 -30 8 h-10 a14 14 0 0 0 -18 16z"/></g>
   </defs>
-  <rect width="1200" height="620" fill="url(#sky)"/>
+  <rect x="-1200" width="3600" height="620" fill="url(#sky)"/>
   <g id="stars"></g>
   <circle cx="600" cy="230" r="300" fill="url(#halo)"/>
   <circle cx="600" cy="230" r="150" fill="url(#moonG)"/>
   <circle cx="548" cy="196" r="22" fill="#e2d4b6" opacity=".5"/><circle cx="650" cy="272" r="14" fill="#e2d4b6" opacity=".45"/><circle cx="668" cy="186" r="9" fill="#e2d4b6" opacity=".4"/>
   <g fill="#2a4580" opacity=".5"><use href="#cloud" x="250" y="150" transform="scale(1.4)" class="w3"/><use href="#cloud" x="560" y="120"/></g>
-  <path d="M-20 470 L140 370 L230 410 L380 300 L470 350 L560 330 L700 400 L800 360 L1000 420 L1220 340 L1220 480 L-20 480Z" fill="#203a72"/>
-  <path d="M-20 480 L90 430 L220 450 L330 400 L520 455 L690 430 L840 452 L980 410 L1220 445 L1220 490 L-20 490Z" fill="#1a3166"/>
+  <path d="M-1200 470 L-1000 390 L-820 430 L-600 350 L-380 420 L-180 380 L-20 470 L140 370 L230 410 L380 300 L470 350 L560 330 L700 400 L800 360 L1000 420 L1220 340 L1420 420 L1640 360 L1880 430 L2100 370 L2400 440 L2400 480 L-1200 480Z" fill="#203a72"/>
+  <path d="M-1200 480 L-900 440 L-600 465 L-300 430 L-20 480 L90 430 L220 450 L330 400 L520 455 L690 430 L840 452 L980 410 L1220 445 L1500 420 L1800 455 L2100 425 L2400 450 L2400 490 L-1200 490Z" fill="#1a3166"/>
   <path d="M352 318 L380 300 L410 320 L395 316 L382 326 L366 314Z" fill="#c9d4ee" opacity=".8"/>
-  <rect y="478" width="1200" height="142" fill="url(#sea)"/>
+  <rect x="-1200" y="478" width="3600" height="142" fill="url(#sea)"/>
   <path d="M540 486 h120 M520 504 h160 M548 522 h104 M565 540 h70" stroke="#f6eedc" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
   <g fill="none" stroke-linecap="round">
     <g class="w3"><use href="#wv" x="-60" y="496" stroke="#3a5d9e" stroke-width="2" opacity=".6"/></g>
@@ -359,7 +359,7 @@ const fee=x=>{const [l,h]=publicEst(x);return Math.max(5,nice((l+h)/2*.04))};
 
 /* ---------- rendering ---------- */
 function rivalsHTML(){const L=r=>`<div class="riv" id="r-${r.id}" style="--c:${r.c}"><div class="halo"></div><svg viewBox="0 0 60 84"><path d="M30 0v10" stroke="#0a0f1f" stroke-width="2"/><rect x="17" y="9" width="26" height="7" rx="2" fill="#2b1b14"/><path d="M11 22 C6 38 6 56 11 70 C15 77 45 77 49 70 C54 56 54 38 49 22 C45 13 15 13 11 22Z" fill="${r.c}"/><path d="M8 34h44M7 46h46M8 58h44" stroke="#0a0f1f" stroke-opacity=".25"/><path d="M16 26 C12 40 12 54 16 66" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="17" y="72" width="26" height="7" rx="2" fill="#2b1b14"/></svg><p><i>${r.n}</i><i>${r.sh}</i></p><span class="tag">—</span></div>`;return`<div>${L(RIVS[0])}${L(RIVS[1])}</div><div>${L(RIVS[2])}${L(YOU)}</div>`}
-function stars(){let s='',v=7;for(let i=0;i<70;i++){v=v*16807%2147483647;const x=v%1200;v=v*16807%2147483647;const y=v%330;v=v*16807%2147483647;s+=`<circle cx="${x}" cy="${y}" r="${(v%10)/10+.5}" fill="#f6eedc" opacity="${.25+(v%5)/10}"/>`}$('stars').innerHTML=s}
+function stars(){let s='',v=7;for(let i=0;i<180;i++){v=v*16807%2147483647;const x=v%3600-1200;v=v*16807%2147483647;const y=v%330;v=v*16807%2147483647;s+=`<circle cx="${x}" cy="${y}" r="${(v%10)/10+.5}" fill="#f6eedc" opacity="${.25+(v%5)/10}"/>`}$('stars').innerHTML=s}
 function drawStage(enter){
  const rv=phase==='esito'?{cond:1,auth:1}:{cond:!!it.known.cond,auth:!!it.known.auth};
  $('item').innerHTML=`<g class="${enter?'enter':''}" id="itemIn">${drawItem(it,'m'+it.seed,rv)}</g>`;
@@ -406,13 +406,18 @@ function ring(T){const c=$('ringC'),L=2*Math.PI*70;c.style.strokeDasharray=L;c.s
 function bump(){const b=$('price');b.classList.remove('bump');b.getBoundingClientRect();b.classList.add('bump')}
 function countUp(el,to,ms){const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/ms),e=1-(1-k)**3;el.textContent=fmt(to*e)+' ryō';if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 
+/* ---------- scene framing: keep the raft and object whole at any aspect ---------- */
+const scene=$('scene');
+const frame=()=>{const r=scene.getBoundingClientRect();if(!r.width||!r.height)return;const asp=r.width/r.height;let hu=Math.min(620,Math.max(440,1200/asp)),wu=hu*asp;scene.setAttribute('viewBox',`${(600-wu/2).toFixed(1)} ${(620-hu).toFixed(1)} ${wu.toFixed(1)} ${hu.toFixed(1)}`)};
+const sceneObs=new ResizeObserver(frame);sceneObs.observe(scene);frame();
+
 /* ---------- petals ---------- */
 const cv=$('petals'),cx=cv.getContext('2d'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let PW=0,PH=0,pts=[];
 const fitCv=()=>{const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);PW=r.width;PH=r.height;cv.width=PW*d;cv.height=PH*d;cx.setTransform(d,0,0,d,0,0)};
 const cvObs=new ResizeObserver(fitCv);cvObs.observe(cv);
 const petal=(x,y,burst,col)=>({x,y,vx:burst?(rnd()-.5)*7:-.3-rnd()*.6,vy:burst?-rnd()*6-1:.4+rnd()*.6,r:burst?3+rnd()*4:3+rnd()*3,a:rnd()*6,va:(rnd()-.5)*.08,life:burst?1:2,col:col||(rnd()<.8?'#f4a7b5':'#f8d3da')});
 for(let i=0;i<26;i++)pts.push(petal(rnd()*1400,rnd()*700));
-function burst(cols){for(let i=0;i<70;i++)pts.push(petal(PW/2,PH*.62,true,pick(cols)))}
+function burst(cols){for(let i=0;i<180;i++)pts.push(petal(PW/2,PH*.62,true,pick(cols)))}
 function tick(){cx.clearRect(0,0,PW,PH);pts=pts.filter(p=>{p.x+=p.vx+Math.sin(p.a)*.4;p.y+=p.vy;p.a+=p.va;if(p.life===1){p.vy+=.12;p.vx*=.985;if(p.y>PH+20)return false}else{if(p.y>PH+10){p.y=-10;p.x=rnd()*PW*1.2}if(p.x<-20)p.x=PW+10}
  cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.col;cx.globalAlpha=p.life===1?.95:.6;cx.beginPath();cx.ellipse(0,0,p.r,p.r*.55,0,0,7);cx.fill();cx.restore();return true});requestAnimationFrame(tick)}
 if(!reduce)requestAnimationFrame(tick);
