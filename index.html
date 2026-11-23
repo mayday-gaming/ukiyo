@@ -2,7 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1532">
 <title>Ukiyo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -126,14 +127,40 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:10px
 .keys{font-size:13px;color:var(--mute);margin:10px 0 0}
 kbd{font:inherit;border:1px solid var(--line);border-radius:4px;padding:0 5px}
 @media(max-width:1020px){.riv{width:100px}.deck{grid-template-columns:minmax(0,1fr) minmax(290px,.95fr)}.shelf{grid-column:1/-1}.shelf .grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))}}
-@media(max-width:640px){
-#app{height:auto;grid-template-rows:auto 46svh auto}
-header{gap:8px 16px}.stats{gap:16px;order:3;width:100%;justify-content:space-between}
-.brand h1{font-size:26px}
-.deck{grid-template-columns:minmax(0,1fr);gap:18px}
-.rivals>div{flex-direction:column;gap:6px}.rivals{top:10px}.riv{width:64px}.riv svg{width:30px;height:44px}.riv .halo{width:70px;height:70px}.riv p{padding:2px 7px}.riv p i{display:none}.riv p i+i{display:inline}.riv .tag{font-size:14px;padding:4px 8px;min-width:44px}
-.hammer{width:116px;height:116px}.hammer .ring{width:136px;height:136px}
+button,.btn{touch-action:manipulation}
+.icon svg{width:20px;height:20px;display:block}
+.icon .on{display:none}.icon[aria-pressed=true] .on{display:inline}.icon[aria-pressed=true] .off{display:none}
+.icon{display:inline-grid;place-items:center;padding:0 12px}
+@media(max-width:640px),(max-height:520px) and (orientation:landscape){
+#app{height:auto;min-height:100%;grid-template-rows:auto 34svh auto}
+header{gap:8px 12px;padding:max(8px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left))}
+.brand{gap:10px}.seal{width:32px;height:32px;font-size:12px}.brand h1{font-size:23px}.brand small{display:none}
+.stats{order:3;width:100%;justify-content:space-between;gap:8px}
+.stat b{font-size:17px}
+.seg button{padding:6px 12px;min-height:40px}.icon{height:44px}
+.deck{grid-template-columns:minmax(0,1fr);gap:16px;padding:14px max(14px,env(safe-area-inset-left)) calc(196px + env(safe-area-inset-bottom))}
+.info h2{font-size:22px}
+.quote{margin:3px 0 8px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.est b{font-size:20px}
+.clues{margin:8px 0;gap:6px}.clue{min-height:50px;padding:6px 8px}.clue b{font-size:13px}
+#insp{width:100%}
+.rivals>div{flex-direction:column;gap:6px}.rivals{top:8px;left:6px;right:6px}.riv{width:62px}.riv svg{width:28px;height:40px}.riv .halo{width:66px;height:66px}.riv p{padding:2px 7px}.riv p i{display:none}.riv p i+i{display:inline}.riv .tag{font-size:14px;padding:4px 8px;min-width:44px}
+.reveal{bottom:8%;padding:6px 14px}.stamp{top:34%;border-width:4px}
+.act{position:fixed;left:0;right:0;bottom:0;z-index:6;background:color-mix(in srgb,var(--deck) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -12px 30px #0006;padding:10px max(14px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"call call" "bid ham" "side ham";gap:4px 14px}
+.caller{grid-area:call;margin:0 0 4px;font-size:15px;min-height:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bidline{grid-area:bid}.bidline b{font-size:28px}.bidline em{font-size:13px;margin-top:2px;min-height:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side{grid-area:side;flex-wrap:nowrap}.side .btn{padding:8px 14px;font-size:14px;white-space:nowrap}
+.hammer{grid-area:ham;width:96px;height:96px;align-self:center;margin:6px}.hammer .ring{inset:-8px;width:112px;height:112px}.hammer strong{font-size:22px}
+.shelf .grid{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px}.slot{flex:0 0 64px;scroll-snap-align:start}
 .keys{display:none}
+}
+@media(max-height:520px) and (orientation:landscape){
+#app{height:100%;min-height:0;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);grid-template-rows:auto minmax(0,1fr)}
+header{grid-column:1/-1;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}
+.stats{width:auto;order:0;gap:18px}
+.deck{display:flex;flex-direction:column;overflow-y:auto;padding:12px max(14px,env(safe-area-inset-right)) 0 14px;border-top:0;border-left:1px solid var(--line);gap:12px}
+.act{position:sticky;bottom:0;order:9;margin:auto -14px 0;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+.shelf{order:5}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
@@ -150,7 +177,7 @@ header{gap:8px 16px}.stats{gap:16px;order:3;width:100%;justify-content:space-bet
   </div>
   <div class="ctl">
     <div class="seg" role="group" aria-label="Modalità"><button id="mQuiete" aria-pressed="true">Quiete</button><button id="mMarea" aria-pressed="false">Marea</button></div>
-    <button class="icon" id="snd" aria-pressed="true">Suono sì</button>
+    <button class="icon" id="snd" aria-pressed="true" aria-label="Suono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
   </div>
 </header>
 
@@ -283,12 +310,13 @@ const load=()=>{try{const d=JSON.parse(localStorage.getItem('ukiyo-v1')||'null')
 let ac=null;
 const au=()=>{if(!S.sound)return null;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}};
 function tone(f,d,type,v,t0){const a=au();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+(t0||0);o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.05)}
+const buzz=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
 const SFX={
- you:()=>{tone(587,.6,'triangle',.08);tone(880,.5,'sine',.035,.02)},
+ you:()=>{buzz(12);tone(587,.6,'triangle',.08);tone(880,.5,'sine',.035,.02)},
  riv:()=>{tone(392,.5,'triangle',.06)},
- flip:()=>{tone(1318,.25,'sine',.04);tone(1760,.2,'sine',.02,.05)},
+ flip:()=>{buzz(8);tone(1318,.25,'sine',.04);tone(1760,.2,'sine',.02,.05)},
  tick:()=>tone(1046,.12,'sine',.03),
- gong:()=>{[98,147,196,294].forEach((f,i)=>tone(f,2.8-i*.4,'sine',.16/(i+1)))},
+ gong:()=>{buzz([30,60,90]);[98,147,196,294].forEach((f,i)=>tone(f,2.8-i*.4,'sine',.16/(i+1)))},
  cash:()=>[523,587,659,784,880,1046].forEach((f,i)=>tone(f,1,'triangle',.06,.25+i*.09)),
  trash:()=>{tone(110,1.4,'sine',.16,.2);tone(73,1.6,'sine',.1,.28)},
  open:()=>[392,523,659].forEach((f,i)=>tone(f,.9,'sine',.05,i*.12))
@@ -371,7 +399,7 @@ function renderStats(){
  $('sEye').textContent=S.wins?Math.round(S.good/S.wins*100)+'%':'—';
  $('sRound').textContent=fmt(S.round);
  $('mQuiete').setAttribute('aria-pressed',S.mode==='quiete');$('mMarea').setAttribute('aria-pressed',S.mode==='marea');
- $('snd').textContent=S.sound?'Suono sì':'Suono no';$('snd').setAttribute('aria-pressed',S.sound);
+ $('snd').setAttribute('aria-label',S.sound?'Suono attivo':'Suono spento');$('snd').setAttribute('aria-pressed',S.sound);
 }
 function renderInfo(){
  $('name').textContent=nameOf(it);
@@ -408,7 +436,7 @@ function countUp(el,to,ms){const t0=performance.now();const f=t=>{const k=Math.m
 
 /* ---------- scene framing: keep the raft and object whole at any aspect ---------- */
 const scene=$('scene');
-const frame=()=>{const r=scene.getBoundingClientRect();if(!r.width||!r.height)return;const asp=r.width/r.height;let hu=Math.min(620,Math.max(440,1200/asp)),wu=hu*asp;scene.setAttribute('viewBox',`${(600-wu/2).toFixed(1)} ${(620-hu).toFixed(1)} ${wu.toFixed(1)} ${hu.toFixed(1)}`)};
+const frame=()=>{const r=scene.getBoundingClientRect();if(!r.width||!r.height)return;const asp=r.width/r.height;let hu=Math.min(asp<1.7?500:620,Math.max(440,1200/asp)),wu=hu*asp;scene.setAttribute('viewBox',`${(600-wu/2).toFixed(1)} ${(620-hu).toFixed(1)} ${wu.toFixed(1)} ${hu.toFixed(1)}`)};
 const sceneObs=new ResizeObserver(frame);sceneObs.observe(scene);frame();
 
 /* ---------- petals ---------- */
