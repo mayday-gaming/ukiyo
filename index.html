@@ -128,6 +128,68 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:10px
 kbd{font:inherit;border:1px solid var(--line);border-radius:4px;padding:0 5px}
 @media(max-width:1020px){.riv{width:100px}.deck{grid-template-columns:minmax(0,1fr) minmax(290px,.95fr)}.shelf{grid-column:1/-1}.shelf .grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))}}
 button,.btn{touch-action:manipulation}
+#item{cursor:zoom-in}
+.peek{position:absolute;left:max(2vw,12px);bottom:14px;z-index:3;display:flex;align-items:center;gap:8px;border:1px solid #f3ecdf55;background:#0a1230cc;color:var(--paper);border-radius:999px;padding:0 16px 0 12px;min-height:44px;font-size:15px;font-weight:500;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.peek svg{width:20px;height:20px}
+.peek.nudge{animation:nudge 2.4s ease-in-out 3}
+@keyframes nudge{50%{box-shadow:0 0 0 8px #f4a7b533;border-color:var(--sak)}}
+.meter{margin:10px 0 2px}
+.mtrack{position:relative;height:12px;border-radius:999px;background:#0a1230;border:1px solid var(--line)}
+.mtrack .band{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#f4a7b555,#f4a7b5aa,#f4a7b555);border-radius:999px;transition:left .5s,width .5s}
+.mtrack i{position:absolute;top:-6px;bottom:-6px;width:4px;margin-left:-2px;border-radius:2px;background:var(--seal);box-shadow:0 0 0 2px var(--deck);transition:left .35s}
+.mtrack i.true{background:var(--gold);opacity:0}.mtrack i.true.on{opacity:1}
+.mlab{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--mute);margin-top:6px}
+.mlab b{color:var(--paper);font-weight:500}
+.clue{text-align:left;font:inherit;color:inherit;cursor:default;width:100%}
+button.clue{cursor:pointer}button.clue:hover:not(:disabled){border-color:var(--sak)}
+.clue em{display:block;font-style:normal;font-size:13px;opacity:.75;line-height:1.2;margin-top:1px}
+.clue .fee{color:var(--sak)}
+.reveal em{display:block;font-style:normal;font-size:13px;color:#4a5578;margin-top:2px}
+.modal{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:#050a1ccc;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .25s ease-out}
+.modal[hidden]{display:none}
+@keyframes fade{from{opacity:0}}
+.sheet{position:relative;width:min(920px,100%);max-height:calc(100% - 8px);overflow:auto;background:var(--deck);border:1px solid var(--line);border-radius:14px;box-shadow:0 30px 80px #000a;animation:rise .35s cubic-bezier(.2,.9,.25,1.1)}
+@keyframes rise{from{transform:translateY(30px);opacity:0}}
+.x{position:absolute;right:10px;top:10px;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#0a1230;font-size:22px;line-height:1}
+.lensBox{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.lensView{position:relative;overflow:hidden;min-height:420px;background:radial-gradient(circle at 50% 42%,#f6eedc 0 22%,#2b4a86 23%,#14244c 70%);border-radius:14px 0 0 14px;cursor:zoom-in;touch-action:manipulation}
+.lensView>svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.lensView.zoom{cursor:zoom-out}.lensView.zoom>svg{transform:scale(2.3)}
+.lensView .turn{animation:turn 7s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes turn{25%{transform:rotate(-2deg) translateY(-3px)}75%{transform:rotate(2deg) translateY(-3px)}}
+.lensTip{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:13px;background:#0a1230cc;padding:4px 12px;border-radius:999px;white-space:nowrap;pointer-events:none}
+.sweep::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 35%,#fff8e6aa 50%,transparent 65%);transform:translateX(-100%);animation:sweep 1.2s ease-in-out forwards;pointer-events:none}
+@keyframes sweep{to{transform:translateX(100%)}}
+.fx-cond .crk{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.4s ease-out .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fx-auth .sl{animation:pop .6s cubic-bezier(.3,1.7,.5,1) .2s both;transform-box:fill-box;transform-origin:center}
+@keyframes pop{from{transform:scale(0)}}
+.lensInfo{padding:26px 24px 22px}
+.lensInfo h3{margin:0 50px 4px 0;font:800 clamp(24px,3vw,30px)/1.1 "Shippori Mincho B1",serif;text-wrap:balance}
+.lensInfo>p{margin:0 0 12px;color:var(--mute);font-size:15px}
+.lclues{display:grid;gap:8px;margin:14px 0}
+.lc{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 12px;text-align:left;border:1px solid var(--line);background:#0a1230;border-radius:10px;padding:10px 14px;min-height:60px;font:inherit;color:inherit}
+button.lc{cursor:pointer}button.lc:hover:not(:disabled){border-color:var(--sak)}
+.lc small{display:block;font-size:13px;color:var(--mute)}
+.lc b{font-size:16px}
+.lc .cost{font-size:14px;color:var(--sak);white-space:nowrap;font-weight:700}
+.lc.open{background:var(--paper);color:var(--ink);border-color:var(--paper)}.lc.open small{color:#4a5578}
+.lc.open.bad{background:#2a1530;color:var(--sak);border-color:#5a2a4a}.lc.open.great{background:var(--gold);border-color:var(--gold)}
+.lc .tagv{font-size:13px;font-weight:700;white-space:nowrap}
+.lnote{font-size:14px;color:var(--mute);margin:0}
+.help{padding:28px clamp(20px,4vw,40px) 24px}
+.help h3{margin:0 50px 4px 0;font:800 clamp(26px,3.4vw,34px)/1.1 "Shippori Mincho B1",serif}
+.help>p{color:var(--mute);margin:0 0 16px}
+.steps{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;background:#0a1230;border:1px solid var(--line);border-radius:12px;padding:14px}
+.steps .n{display:grid;place-items:center;width:40px;height:40px;border-radius:8px;background:var(--seal);color:#fff4ee;font:800 20px/1 "Shippori Mincho B1",serif}
+.steps b{display:block;font:800 18px/1.2 "Shippori Mincho B1",serif;margin-bottom:3px}
+.steps p{margin:0;font-size:15px;color:#cfd7ec}
+.mini{display:inline-block;font:800 15px/1 "Shippori Mincho B1",serif;padding:3px 8px;border:2px solid currentColor;border-radius:5px;transform:rotate(-5deg)}
+.mini.c{color:var(--seal)}.mini.t{color:#c9d2ea;border-style:dashed}
+.go{background:var(--seal);border:0;color:#fff4ee;border-radius:999px;min-height:48px;padding:0 28px;font-size:16px;font-weight:700}
+@media(max-width:760px){.lensBox{grid-template-columns:minmax(0,1fr)}.lensView{min-height:46svh;border-radius:14px 14px 0 0}.steps{grid-template-columns:minmax(0,1fr)}.lensInfo{padding:18px 16px}}
+@media(max-width:640px){.modal{padding:0;place-items:end stretch}.sheet{border-radius:16px 16px 0 0;max-height:94svh;padding-bottom:env(safe-area-inset-bottom)}.lensView{min-height:40svh}.help{padding:22px 16px 18px}.steps li{padding:12px}}
 .icon svg{width:20px;height:20px;display:block}
 .icon .on{display:none}.icon[aria-pressed=true] .on{display:inline}.icon[aria-pressed=true] .off{display:none}
 .icon{display:inline-grid;place-items:center;padding:0 12px}
@@ -137,13 +199,14 @@ header{gap:8px 12px;padding:max(8px,env(safe-area-inset-top)) max(14px,env(safe-
 .brand{gap:10px}.seal{width:32px;height:32px;font-size:12px}.brand h1{font-size:23px}.brand small{display:none}
 .stats{order:3;width:100%;justify-content:space-between;gap:8px}
 .stat b{font-size:17px}
-.seg button{padding:6px 12px;min-height:40px}.icon{height:44px}
+.seg button{min-height:40px}
 .deck{grid-template-columns:minmax(0,1fr);gap:16px;padding:14px max(14px,env(safe-area-inset-left)) calc(196px + env(safe-area-inset-bottom))}
 .info h2{font-size:22px}
 .quote{margin:3px 0 8px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .est b{font-size:20px}
 .clues{margin:8px 0;gap:6px}.clue{min-height:50px;padding:6px 8px}.clue b{font-size:13px}
-#insp{width:100%}
+.peek{left:10px;bottom:10px;padding:0 14px 0 12px}.peek span{font-size:14px}.stage.done .peek{display:none}.reveal{bottom:10px}
+header{gap:8px}.seg button{padding:6px 10px;font-size:14px}.icon{min-width:40px;height:40px;padding:0 9px}.ctl{gap:6px}
 .rivals>div{flex-direction:column;gap:6px}.rivals{top:8px;left:6px;right:6px}.riv{width:62px}.riv svg{width:28px;height:40px}.riv .halo{width:66px;height:66px}.riv p{padding:2px 7px}.riv p i{display:none}.riv p i+i{display:inline}.riv .tag{font-size:14px;padding:4px 8px;min-width:44px}
 .reveal{bottom:8%;padding:6px 14px}.stamp{top:34%;border-width:4px}
 .act{position:fixed;left:0;right:0;bottom:0;z-index:6;background:color-mix(in srgb,var(--deck) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -12px 30px #0006;padding:10px max(14px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"call call" "bid ham" "side ham";gap:4px 14px}
@@ -177,6 +240,7 @@ header{grid-column:1/-1;padding-top:max(6px,env(safe-area-inset-top));padding-bo
   </div>
   <div class="ctl">
     <div class="seg" role="group" aria-label="Modalità"><button id="mQuiete" aria-pressed="true">Quiete</button><button id="mMarea" aria-pressed="false">Marea</button></div>
+    <button class="icon" id="helpB" aria-label="Come si gioca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4"/><circle cx="12" cy="17.3" r=".6" fill="currentColor"/></svg></button>
     <button class="icon" id="snd" aria-pressed="true" aria-label="Suono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
   </div>
 </header>
@@ -225,7 +289,8 @@ header{grid-column:1/-1;padding-top:max(6px,env(safe-area-inset-top));padding-bo
 <div class="rivals" id="rivals"></div>
 <div class="ink" id="ink"></div>
 <div class="stamp" id="stamp">Cash</div>
-<div class="reveal" id="reveal"><span id="rvLbl">Valore reale</span><b id="rv">0</b></div>
+<div class="reveal" id="reveal"><span id="rvLbl">Valore reale</span><b id="rv">0</b><em id="rvSum"></em></div>
+<button class="peek nudge" id="peek"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Guarda da vicino</span></button>
 </section>
 
 <section class="deck">
@@ -233,8 +298,8 @@ header{grid-column:1/-1;padding-top:max(6px,env(safe-area-inset-top));padding-bo
     <h2 id="name">Teiera in porcellana</h2>
     <p class="quote" id="quote"></p>
     <div class="est"><span>Perizia</span><b id="est">—</b></div>
+    <div class="meter"><div class="mtrack"><div class="band" id="mBand"></div><i id="mTrue" class="true"></i><i id="mBid"></i></div><div class="mlab"><span id="mL">Rosa: la stima del perito</span><span id="mR"></span></div></div>
     <div class="clues" id="clues"></div>
-    <button class="btn" id="insp">Ispeziona</button>
   </div>
   <div class="act">
     <button class="hammer calm" id="hammer"><svg class="ring" viewBox="0 0 152 152"><circle class="track" cx="76" cy="76" r="70"/><circle class="prog" id="ringC" cx="76" cy="76" r="70"/></svg><small id="hTop">Apri</small><strong id="hBig">l'asta</strong></button>
@@ -245,11 +310,39 @@ header{grid-column:1/-1;padding-top:max(6px,env(safe-area-inset-top));padding-bo
   <div class="shelf">
     <h3>Il tuo scaffale</h3>
     <div class="grid" id="shelf"></div>
-    <p class="keys"><kbd>Spazio</kbd> offri · <kbd>I</kbd> ispeziona · <kbd>J</kbd> rilancio deciso · <kbd>P</kbd> passo</p>
+    <p class="keys"><kbd>Spazio</kbd> offri · <kbd>L</kbd> guarda · <kbd>I</kbd> ispeziona · <kbd>J</kbd> rilancio deciso · <kbd>P</kbd> passo</p>
   </div>
 </section>
 </div>
 <div class="toast" id="toast"></div>
+<div class="modal" id="lens" hidden role="dialog" aria-modal="true" aria-labelledby="lensName">
+  <div class="sheet"><button class="x" data-close aria-label="Chiudi">×</button>
+    <div class="lensBox">
+      <div class="lensView" id="lensView"><svg id="lensSvg" viewBox="-135 -245 270 262" preserveAspectRatio="xMidYMid meet"></svg><span class="lensTip" id="lensTip">Tocca per ingrandire</span></div>
+      <div class="lensInfo">
+        <h3 id="lensName"></h3>
+        <p id="lensDesc"></p>
+        <div class="lclues" id="lensClues"></div>
+        <p class="lnote" id="lensNote"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="help" hidden role="dialog" aria-modal="true" aria-labelledby="helpT">
+  <div class="sheet"><button class="x" data-close aria-label="Chiudi">×</button>
+    <div class="help">
+      <h3 id="helpT">Come si gioca</h3>
+      <p>Sei un mercante al mercato fluttuante. Compri oggetti all'asta e li rivendi subito al loro valore reale.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><div><b>Guarda l'oggetto</b><p>Tocca l'oggetto sulla zattera o «Guarda da vicino» per esaminarlo e ingrandirlo.</p></div></li>
+        <li><span class="n">2</span><div><b>Leggi la perizia</b><p>La fascia rosa è la stima del perito. Paga pochi ryō per scoprire epoca, stato e firma: la stima si stringe. Attento alle copie.</p></div></li>
+        <li><span class="n">3</span><div><b>Batti il martello</b><p>Apri l'asta e offri contro tre rivali. Se nessuno rilancia prima che l'anello si chiuda, l'oggetto è tuo.</p></div></li>
+        <li><span class="n">4</span><div><b><span class="mini c">Cash</span> o <span class="mini t">Trash</span></b><p>Se hai pagato meno del valore reale guadagni, altrimenti perdi. Non si perde mai del tutto: se la borsa si svuota, la corrente porta nuovi ryō.</p></div></li>
+      </ol>
+      <button class="go" data-close>Ho capito, si gioca</button>
+    </div>
+  </div>
+</div>
 
 <script>
 {
@@ -285,8 +378,9 @@ const TYPES=[
  {k:'gatto',n:'Statuetta di gatto',b:80,mats:['porc','bronzo','giada','hinoki']},
  {k:'rotolo',n:'Rotolo dipinto',b:140,mats:['washi','seta']}
 ];
-const ERA=[{n:'Periodo Edo',m:2.3,p:.12},{n:'Periodo Meiji',m:1.6,p:.22},{n:'Periodo Taishō',m:1.2,p:.22},{n:'Periodo Shōwa',m:.85,p:.26},{n:'Moderno',m:.5,p:.18}];
-const COND=[{n:'Integro',m:1.2,p:.25},{n:'Buono stato',m:1,p:.4},{n:"Segni d'uso",m:.65,p:.2},{n:'Kintsugi',m:.85,p:.15}];
+const ERA=[{n:'Periodo Edo',m:2.3,p:.12,h:'antico, vale molto'},{n:'Periodo Meiji',m:1.6,p:.22,h:'pregiato'},{n:'Periodo Taishō',m:1.2,p:.22,h:'nella media'},{n:'Periodo Shōwa',m:.85,p:.26,h:'vale un po’ meno'},{n:'Moderno',m:.5,p:.18,h:'vale poco'}];
+const COND=[{n:'Integro',m:1.2,p:.25,h:'perfetto, vale di più'},{n:'Buono stato',m:1,p:.4,h:'nella media'},{n:"Segni d'uso",m:.65,p:.2,h:'crepato, svaluta'},{n:'Kintsugi',m:.85,p:.15,h:'riparato con l’oro'}];
+const AH=['vale quanto stimato','vale tre volte tanto','patacca, vale poco'];
 const AUTH={quiete:[{n:'Autentica',m:1,p:.78},{n:'Di un maestro',m:3,p:.06},{n:'Copia',m:.12,p:.16}],marea:[{n:'Autentica',m:1,p:.68},{n:'Di un maestro',m:3.4,p:.08},{n:'Copia',m:.1,p:.24}]};
 const EV=a=>a.reduce((s,x)=>s+x.p*x.m,0);
 const SELLERS=['Un pescatore di Ōsaka','Una maestra in pensione','Due fratelli di Nara','Un monaco di passaggio','Una ragazza con la bici','Un vecchio barcaiolo','Una sarta di Kyoto','Un collezionista stanco'];
@@ -297,7 +391,8 @@ const RIVS=[
  {id:'tanuki',n:'Monaco Tanuki',sh:'Tanuki',s:.42,m:.82,naive:.55,c:'#8fd6c4'}
 ];
 const YOU={id:'you',n:'Tu',sh:'Tu',c:'#f3ecdf'};
-const CLUE=[{k:'era',n:'Epoca'},{k:'cond',n:'Stato'},{k:'auth',n:'Firma'}];
+const CLUE=[{k:'era',n:'Epoca',v:'Gira verso la luce'},{k:'cond',n:'Stato',v:'Sfiora la superficie'},{k:'auth',n:'Firma',v:'Cerca il sigillo'}];
+const MD={raku:'Ceramica cotta a mano, smalti colati e irregolari.',porc:'Bianca e sottile, decorata a pennello in blu.',bronzo:'Metallo pesante con una patina scura.',lacca:'Strati di lacca lucidata e decori in oro.',ottone:'Metallo dorato e leggero.',hinoki:'Legno chiaro e profumato di cipresso.',giada:'Pietra verde, fredda al tatto.',argento:'Metallo prezioso, segni di lucidatura.',washi:'Carta di fibre vegetali, traslucida.',seta:'Seta dipinta a mano.'};
 
 let S={wallet:1000,gifts:0,round:0,wins:0,good:0,best:0,shelf:[],mode:'quiete',sound:true};
 let it=null,phase='perizia',A=null,tm=[];
@@ -358,10 +453,10 @@ function drawItem(x,id,rv){
  let ribs='';if(sh.ribs)for(let y=-150;y<-36;y+=14)ribs+=`<path d="M-80,${y} H80" stroke="${c1}" stroke-width="1.6" opacity=".45"/>`;
  const CR='M-34,-160 L-16,-128 L-28,-102 L-4,-78 L-14,-52 L8,-26';
  let crack='';
- if(rv.cond&&x.c===2)crack=`<path d="${CR}" stroke="#140c0c" stroke-width="2.6" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l20,-6 M-4,-78 l-18,8" stroke="#140c0c" stroke-width="1.6"/>`;
- if(rv.cond&&x.c===3)crack=`<path d="${CR}" stroke="#f2c35e" stroke-width="9" fill="none" opacity=".25" stroke-linejoin="round"/><path d="${CR}" stroke="#f7d27a" stroke-width="3.2" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l24,-8 M-4,-78 l-22,10" stroke="#f7d27a" stroke-width="2.2"/>`;
+ if(rv.cond&&x.c===2)crack=`<path class="crk" d="${CR}" stroke="#140c0c" stroke-width="2.6" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l20,-6 M-4,-78 l-18,8" stroke="#140c0c" stroke-width="1.6"/>`;
+ if(rv.cond&&x.c===3)crack=`<path class="crk" d="${CR}" stroke="#f2c35e" stroke-width="9" fill="none" opacity=".25" stroke-linejoin="round"/><path class="crk" d="${CR}" stroke="#f7d27a" stroke-width="3.2" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l24,-8 M-4,-78 l-22,10" stroke="#f7d27a" stroke-width="2.2"/>`;
  let seal='';
- if(rv.auth){const a=x.a;seal=a===2?`<g transform="translate(62,-34) rotate(8)"><rect x="-24" y="-11" width="48" height="22" rx="3" fill="#c9d2ea"/><text y="5" text-anchor="middle" font-size="13" font-family="Zen Kaku Gothic New,sans-serif" font-weight="700" fill="#14244c">copia</text></g>`:`<g transform="translate(64,-34) rotate(-6)">${a===1?'<rect x="-15" y="-15" width="30" height="30" rx="4" fill="none" stroke="#f2c35e" stroke-width="3"/>':''}<rect x="-11" y="-11" width="22" height="22" rx="3" fill="#d33b2c"/><text y="5" text-anchor="middle" font-size="14" font-family="Shippori Mincho B1,serif" font-weight="800" fill="#fff4ee">印</text></g>`}
+ if(rv.auth){const a=x.a;seal=a===2?`<g transform="translate(62,-34) rotate(8)"><g class="sl"><rect x="-24" y="-11" width="48" height="22" rx="3" fill="#c9d2ea"/><text y="5" text-anchor="middle" font-size="13" font-family="Zen Kaku Gothic New,sans-serif" font-weight="700" fill="#14244c">copia</text></g></g>`:`<g transform="translate(64,-34) rotate(-6)"><g class="sl">${a===1?'<rect x="-15" y="-15" width="30" height="30" rx="4" fill="none" stroke="#f2c35e" stroke-width="3"/>':''}<rect x="-11" y="-11" width="22" height="22" rx="3" fill="#d33b2c"/><text y="5" text-anchor="middle" font-size="14" font-family="Shippori Mincho B1,serif" font-weight="800" fill="#fff4ee">印</text></g></g>`}
  return`<defs>${defs}</defs><ellipse cy="2" rx="86" ry="9" fill="#000" opacity=".35"/>${sh.pre}<path d="${sh.d}" fill="${G}"/><g clip-path="url(#${id}c)">${pattern(M.pat,c0,c1,c2,x.seed)}${ribs}${sh.extra||''}<path d="M-120,-240 H-40 C-70,-160 -70,-60 -40,0 H-120Z" fill="#fff" opacity=".07"/></g>${sh.post}<g clip-path="url(#${id}c)">${crack}</g>${seal}`;
 }
 
@@ -401,17 +496,27 @@ function renderStats(){
  $('mQuiete').setAttribute('aria-pressed',S.mode==='quiete');$('mMarea').setAttribute('aria-pressed',S.mode==='marea');
  $('snd').setAttribute('aria-label',S.sound?'Suono attivo':'Suono spento');$('snd').setAttribute('aria-pressed',S.sound);
 }
+const clueVal=(k,x)=>k==='era'?ERA[x.e]:k==='cond'?COND[x.c]:{...AUTH[S.mode][x.a],h:AH[x.a]};
+const clueCls=k=>k==='era'?(it.e===0?'great':it.e===4?'bad':''):k==='cond'?(it.c===0?'great':it.c===2?'bad':''):(it.a===1?'great':it.a===2?'bad':'');
 function renderInfo(){
  $('name').textContent=nameOf(it);
  $('quote').textContent=`${it.seller}: ${it.quote}`;
- const [l,h]=estimate(it),all=phase==='esito';
+ const [l,h]=estimate(it),all=phase==='esito',f=fee(it);
  $('est').textContent=`${fmt(l)} – ${fmt(h)} ryō`;$('est').className=Object.keys(it.known).length>1?'tight':'';
- $('clues').innerHTML=CLUE.map(c=>{const open=all||it.known[c.k];let v='?',cls='';
-  if(open){if(c.k==='era'){v=ERA[it.e].n;cls=it.e===0?'great':it.e===4?'bad':''}else if(c.k==='cond'){v=COND[it.c].n;cls=it.c===0?'great':it.c===2?'bad':''}else{v=AUTH[S.mode][it.a].n;cls=it.a===1?'great':it.a===2?'bad':''}}
-  return`<div class="clue ${open?'open':''} ${cls}" data-k="${c.k}"><span>${c.n}</span><b>${v}</b></div>`}).join('');
- const left=it.clues.filter(k=>!it.known[k]).length;
- $('insp').disabled=phase!=='perizia'||!left||S.wallet<fee(it);
- $('insp').textContent=phase!=='perizia'?'Perizia chiusa':left?`Ispeziona · ${fmt(fee(it))} ryō`:'Tutto esaminato';
+ $('clues').innerHTML=CLUE.map(c=>{const open=all||it.known[c.k];
+  if(open){const v=clueVal(c.k,it);return`<div class="clue open ${clueCls(c.k)}"><span>${c.n}</span><b>${v.n}</b><em>${v.h}</em></div>`}
+  const can=phase==='perizia'&&S.wallet>=f;
+  return`<button class="clue" data-k="${c.k}" ${can?'':'disabled'}><span>${c.n}</span><b>?</b><em class="fee">${phase==='perizia'?'Scopri · '+fmt(f):'chiuso'}</em></button>`}).join('');
+ renderMeter();
+}
+function renderMeter(){
+ const [l,h]=estimate(it),cur=A&&A.leader?A.price:A?A.open:openPrice(),top=Math.max(h*1.35,cur*1.15,phase==='esito'?it.val*1.1:0),P=v=>Math.min(100,v/top*100).toFixed(2)+'%';
+ const band=$('mBand');band.style.left=P(l);band.style.width=`calc(${P(h)} - ${P(l)})`;
+ $('mBid').style.left=P(cur);
+ const t=$('mTrue');t.classList.toggle('on',phase==='esito');if(phase==='esito')t.style.left=P(it.val);
+ const lab=phase==='perizia'?'Base d’asta':A&&A.leader?'Offerta':'Si parte da';
+ $('mL').innerHTML=phase==='esito'?`Oro: valore reale <b>${fmt(it.val)}</b>`:`Rosa: stima del perito`;
+ $('mR').innerHTML=`Linea rossa: ${lab.toLowerCase()} <b>${fmt(cur)}</b>`;
 }
 function renderAct(){
  const h=$('hammer'),b=$('price');
@@ -459,20 +564,38 @@ function newRound(first){
  clr();
  if(!first&&S.wallet<150){S.wallet+=400;S.gifts+=400;toast('La corrente ti porta 400 ryō. Il mercato non chiude mai.')}
  S.round++;it=makeItem();phase='perizia';A=null;RIVS.forEach(r=>r.out=false);
- ['stamp','ink','reveal'].forEach(k=>$(k).className=k);
+ ['stamp','ink','reveal'].forEach(k=>$(k).className=k);$('stage').classList.remove('done');if(S.round<4)$('peek').classList.add('nudge');
  drawStage(true);ripple();ring(0);
  say(pick(['Una barca attracca al pontile.','La luna illumina il prossimo lotto.','Arriva qualcosa avvolto nella seta.','Il banditore solleva la lanterna.']));
  renderInfo();renderAct();renderRivals();renderStats();save();
 }
-function inspect(){
- if(phase!=='perizia')return;const k=it.clues.find(k=>!it.known[k]);if(!k)return;const f=fee(it);if(S.wallet<f)return;
+function inspect(k){
+ if(phase!=='perizia')return;k=k||it.clues.find(q=>!it.known[q]);if(!k||it.known[k])return;const f=fee(it);if(S.wallet<f){toast('La borsa non basta per la perizia.');return}
  S.wallet-=f;it.fees=(it.fees||0)+f;it.known[k]=1;SFX.flip();
- const lines={era:'Il perito gira l’oggetto alla luce: ',cond:'Lo sfiora con le dita: ',auth:'Cerca il sigillo sul fondo: '};
- const v=k==='era'?ERA[it.e].n:k==='cond'?COND[it.c].n:AUTH[S.mode][it.a].n;
- say(lines[k]+v.toLowerCase()+'.');
+ const lines={era:'Lo giri verso la luce: ',cond:'Ne sfiori la superficie: ',auth:'Cerchi il sigillo sul fondo: '};
+ const v=clueVal(k,it);
+ say(lines[k]+v.n.toLowerCase()+', '+v.h+'.');
  if(k!=='era')drawStage(false);
  renderInfo();renderAct();renderStats();save();
+ if(!$('lens').hidden)renderLens(k);
 }
+function renderLens(fx){
+ const rv=phase==='esito'?{cond:1,auth:1}:{cond:!!it.known.cond,auth:!!it.known.auth},v=$('lensView');
+ $('lensSvg').innerHTML=`<g class="turn">${drawItem(it,'L'+it.seed+(fx||''),rv)}</g>`;
+ v.classList.remove('sweep','fx-cond','fx-auth');v.getBoundingClientRect();
+ if(fx==='era')v.classList.add('sweep');if(fx==='cond')v.classList.add('fx-cond');if(fx==='auth')v.classList.add('fx-auth');
+ $('lensName').textContent=nameOf(it);
+ $('lensDesc').textContent=`${MD[it.mk]} ${it.seller}: ${it.quote}`;
+ const f=fee(it);
+ $('lensClues').innerHTML=CLUE.map(c=>{const open=phase==='esito'||it.known[c.k];
+  if(open){const x=clueVal(c.k,it);return`<div class="lc open ${clueCls(c.k)}"><div><small>${c.n}</small><b>${x.n}</b></div><span class="tagv">${x.h}</span></div>`}
+  const can=phase==='perizia'&&S.wallet>=f;
+  return`<button class="lc" data-k="${c.k}" ${can?'':'disabled'}><div><small>${c.n}: ancora nascosta</small><b>${c.v}</b></div><span class="cost">${phase==='perizia'?fmt(f)+' ryō':'—'}</span></button>`}).join('');
+ $('lensNote').textContent=phase==='perizia'?'Ogni dettaglio scoperto stringe la stima del perito. Le copie valgono quasi niente.':phase==='asta'?'L’asta è aperta: la perizia è chiusa, ma puoi ancora guardare.':`Valore reale: ${fmt(it.val)} ryō.`;
+}
+let lastFocus=null;
+function openModal(id){lastFocus=document.activeElement;const m=$(id);m.hidden=false;if(id==='lens'){$('lensView').classList.remove('zoom');renderLens();$('peek').classList.remove('nudge')}setTimeout(()=>m.querySelector('.x').focus(),30)}
+function closeModal(m){m.hidden=true;if(m.id==='help'){S.seenHelp=1;save()}lastFocus&&lastFocus.focus&&lastFocus.focus()}
 function startAuction(){
  if(phase!=='perizia')return;phase='asta';SFX.open();
  const pe=publicEst(it),pm=(pe[0]+pe[1])/2;
@@ -498,7 +621,7 @@ function rivalTry(){
  bid(r.id,nx);
 }
 function bid(who,amt){
- A.price=amt;A.leader=who;A.n++;bump();
+ A.price=amt;A.leader=who;A.n++;bump();renderMeter();
  {const el=$('r-'+who);el.classList.remove('pulse');el.getBoundingClientRect();el.classList.add('pulse')}
  if(who==='you'){SFX.you();say(pick(['Offerta dal pontile.','Il banditore annuisce verso di te.','Una nuova offerta, decisa.']))}
  else{SFX.riv();const r=RIVS.find(r=>r.id===who);say(`${r.n} alza la lanterna: ${fmt(amt)}.`)}
@@ -507,7 +630,7 @@ function bid(who,amt){
 function playerBid(amt){if(phase!=='asta'||A.passed||A.leader==='you')return;amt=amt||next();if(S.wallet<amt){toast('La borsa non basta per questa offerta.');return}au();bid('you',amt)}
 function pass(){if(phase!=='asta'||A.leader==='you'||A.passed)return;A.passed=true;A.fast=true;say('Lasci scorrere la corrente.');renderAct();afterBid()}
 function hammer(){
- clr();phase='esito';ring(0);SFX.gong();
+ clr();phase='esito';ring(0);SFX.gong();$('stage').classList.add('done');
  const st=$('stamp'),you=A.leader==='you',fees=it.fees||0;let txt,cls='',note;
  if(you){S.wallet+=it.val-A.price;S.wins++;const p=it.val-A.price-fees;if(p>0)S.good++;S.best=Math.max(S.best,p);
   S.shelf.unshift({tk:it.tk,mk:it.mk,e:it.e,c:it.c,a:it.a,seed:it.seed,price:A.price,val:it.val});S.shelf=S.shelf.slice(0,24);
@@ -520,6 +643,8 @@ function hammer(){
  setTimeout(()=>{st.classList.add('on');$('reveal').classList.add('on');countUp($('rv'),it.val,1100);
   if(txt==='Cash'){SFX.cash();burst(['#f2c35e','#f4a7b5','#fff2c8','#e0412f'])}else if(txt==='Trash'){SFX.trash();$('ink').classList.add('on');$('itemIn')&&$('itemIn').classList.add('dull')}else if(txt==='Sfumato')SFX.riv()},450);
  $('rvLbl').textContent=you?'Rivenduto a':'Valore reale';
+ $('rvSum').textContent=you?`pagato ${fmt(A.price)}${fees?' + perizie '+fmt(fees):''} → ${it.val-A.price-fees>=0?'+':''}${fmt(it.val-A.price-fees)}`:A.leader?`${RIVS.find(r=>r.id===A.leader).sh} ha pagato ${fmt(A.price)}`:'nessuna offerta';
+ if(!$('lens').hidden)renderLens();
  drawStage(false);say(note);
  renderInfo();renderAct();renderRivals();renderShelf(you);renderStats();save();
 }
@@ -527,7 +652,13 @@ function primary(){au();if(phase==='perizia')startAuction();else if(phase==='ast
 
 /* ---------- events ---------- */
 $('hammer').addEventListener('click',primary);
-$('insp').addEventListener('click',()=>{au();inspect()});
+$('clues').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b){au();inspect(b.dataset.k)}});
+$('lensClues').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b){au();inspect(b.dataset.k)}});
+$('peek').addEventListener('click',()=>openModal('lens'));
+$('scene').addEventListener('click',e=>{if(e.target.closest('#item'))openModal('lens')});
+$('helpB').addEventListener('click',()=>openModal('help'));
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-close]'))closeModal(m)}));
+$('lensView').addEventListener('click',e=>{const v=$('lensView'),r=v.getBoundingClientRect();if(!v.classList.contains('zoom')){$('lensSvg').style.transformOrigin=`${e.clientX-r.left}px ${e.clientY-r.top}px`}v.classList.toggle('zoom');$('lensTip').textContent=v.classList.contains('zoom')?'Tocca per tornare indietro':'Tocca per ingrandire'});
 $('jump').addEventListener('click',()=>{const nx=next();playerBid(nx+2*step(nx))});
 $('pass').addEventListener('click',pass);
 $('mQuiete').addEventListener('click',()=>setMode('quiete'));
@@ -535,12 +666,15 @@ $('mMarea').addEventListener('click',()=>setMode('marea'));
 $('snd').addEventListener('click',()=>{S.sound=!S.sound;renderStats();save();if(S.sound)SFX.flip()});
 function setMode(m){if(S.mode===m)return;S.mode=m;renderStats();save();toast(m==='marea'?'Marea: lotti più ricchi, più copie, martello rapido.':'Quiete: martello lento, tempo per respirare.');if(phase!=='asta'){newRound()}}
 addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea'))return;const k=e.key.toLowerCase();
+ const om=[...document.querySelectorAll('.modal')].find(m=>!m.hidden);if(om){if(k==='escape')closeModal(om);return}
+ if(k==='l'){openModal('lens');return}
  if(k===' '||k==='enter'){if(document.activeElement&&document.activeElement.tagName==='BUTTON'&&k==='enter')return;e.preventDefault();primary()}
  else if(k==='i')inspect();else if(k==='p')pass();else if(k==='j'&&phase==='asta'){const nx=next();playerBid(nx+2*step(nx))}});
 
 function start(d){
  load();if(d&&typeof d.wallet==='number')Object.assign(S,d);
  $('rivals').innerHTML=rivalsHTML();stars();renderShelf(false);newRound(true);
+ if(!S.seenHelp)setTimeout(()=>openModal('help'),700);
 }
 window.claude?.hot?.snapshot?.(()=>S);
 window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
