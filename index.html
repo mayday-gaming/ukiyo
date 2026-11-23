@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ukiyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE occasion, hushed: a night market on the water, slow and kind
+   IDEA an ukiyo-e woodblock print of a floating auction under the moon; the hammer is a seal stamp
+   PICTURE the object on a floating raft, moon behind, rival lanterns above, waves and petals moving
+   COLOUR indigo night ground, paper ink, sakura support, vermilion seal accent, gold only for cash
+   TYPE Shippori Mincho B1 for names and numbers, Zen Kaku Gothic New for text
+   LAYOUT stage fills the screen top, deck of three columns below; phone: stage, info, hammer, shelf */
+:root{color-scheme:dark;--night:#0c1532;--ind:#14244c;--deck:#0f1b3d;--line:#2a3f73;--wave:#22407a;--paper:#f3ecdf;--mute:#a9b5d4;--sak:#f4a7b5;--seal:#e0412f;--gold:#f2c35e;--ink:#0a0f1f}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%;margin:0}
+body{background:var(--night);color:var(--paper);font:16px/1.5 "Zen Kaku Gothic New",system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--sak);outline-offset:3px}
+#app{display:grid;grid-template-rows:auto minmax(300px,1fr) auto;height:100%}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:10px max(3vw,16px);background:var(--night);border-bottom:1px solid #1d2d5c;position:relative;z-index:3}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.seal{display:grid;place-items:center;width:40px;height:40px;background:var(--seal);color:#fff4ee;font:800 15px/1 "Shippori Mincho B1",serif;writing-mode:vertical-rl;border-radius:4px;box-shadow:inset 0 0 0 2px #c22e1e;letter-spacing:.05em}
+.brand h1{margin:0;font:800 30px/1 "Shippori Mincho B1",serif;letter-spacing:-.01em}
+.brand small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.stats{display:flex;gap:22px;flex-wrap:wrap}
+.stat span{display:block;font-size:13px;color:var(--mute)}
+.stat b{font:800 20px/1.1 "Shippori Mincho B1",serif;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pos{color:var(--gold)}.neg{color:var(--sak)}
+.ctl{display:flex;gap:8px;align-items:center}
+.seg{display:flex;background:#0a1230;border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:8px 14px;border-radius:999px;font-size:14px;color:var(--mute);min-height:38px}
+.seg button[aria-pressed=true]{background:var(--paper);color:var(--ink);font-weight:700}
+.icon{border:1px solid var(--line);background:#0a1230;border-radius:999px;min-width:44px;height:44px;font-size:14px;padding:0 14px;color:var(--mute)}
+.stage{position:relative;overflow:hidden;background:#0c1532}
+.stage>svg,.stage>canvas{position:absolute;inset:0;width:100%;height:100%}
+.stage>canvas{pointer-events:none}
+.bob{animation:bob 6s ease-in-out infinite;transform-box:fill-box}
+@keyframes bob{50%{transform:translateY(-6px) rotate(.4deg)}}
+.w1{animation:drift 14s linear infinite}.w2{animation:drift 22s linear infinite reverse}.w3{animation:drift 30s linear infinite}
+@keyframes drift{to{transform:translateX(-240px)}}
+.enter{animation:enter 1.1s cubic-bezier(.2,.9,.25,1.15) both}
+@keyframes enter{from{transform:translateY(-70px) scale(.9);opacity:0}}
+.leave{animation:leave .6s ease-in both}
+@keyframes leave{to{transform:translateX(160px) translateY(20px);opacity:0}}
+.ripple{animation:rip 1.6s ease-out both;transform-box:fill-box;transform-origin:center}
+@keyframes rip{from{transform:scale(.3);opacity:.8}to{transform:scale(2.4);opacity:0}}
+.dull{opacity:.42;transition:opacity 1.2s}
+.rivals{position:absolute;left:max(2vw,10px);right:max(2vw,10px);top:14px;display:flex;justify-content:space-between;pointer-events:none;z-index:2}
+.rivals>div{display:flex;gap:clamp(4px,1.5vw,24px)}
+.riv{position:relative;display:grid;justify-items:center;width:120px;transition:opacity .6s,transform .6s}
+.riv .halo{position:absolute;top:-6px;width:110px;height:110px;border-radius:50%;background:radial-gradient(closest-side,var(--c),transparent);opacity:.18;transition:opacity .4s,transform .4s}
+.riv svg{width:46px;height:66px;position:relative;animation:sway 5s ease-in-out infinite;transform-origin:50% 0}
+.riv:nth-child(2) svg{animation-delay:-1.6s}.riv:nth-child(3) svg{animation-delay:-3.1s}
+@keyframes sway{50%{transform:rotate(3deg)}}
+.riv p{margin:4px 0 0;font-size:13px;color:var(--paper);text-align:center;line-height:1.2;background:#0a1230b8;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.riv p i{font-style:normal}.riv p i+i{display:none}
+.riv .tag{margin-top:4px;font:800 15px/1 "Shippori Mincho B1",serif;padding:5px 10px;border-radius:999px;background:#0a1230cc;border:1px solid var(--line);min-width:52px;text-align:center;opacity:0;transform:translateY(-4px);transition:.3s;white-space:nowrap}
+.riv.lead .halo{opacity:.6;transform:scale(1.15)}
+.riv.lead .tag{opacity:1;transform:none;border-color:var(--c);color:var(--c)}
+.riv.out{opacity:.35;transform:translateY(-4px)}
+.riv.pulse .halo{animation:pulse .7s ease-out}
+@keyframes pulse{0%{opacity:1;transform:scale(1.5)}}
+.reveal{position:absolute;left:50%;bottom:12%;transform:translate(-50%,10px);background:var(--paper);color:var(--ink);border-radius:6px;padding:8px 18px 9px;text-align:center;opacity:0;transition:.5s;z-index:2;box-shadow:0 10px 0 -4px #0006;white-space:nowrap}
+.reveal.on{opacity:1;transform:translate(-50%,0)}
+.reveal span{display:block;font-size:13px;color:#4a5578}
+.reveal b{font:800 clamp(26px,4vw,38px)/1 "Shippori Mincho B1",serif;font-variant-numeric:tabular-nums}
+.stamp{position:absolute;left:50%;top:30%;z-index:2;font:800 clamp(34px,6vw,64px)/1 "Shippori Mincho B1",serif;padding:10px 22px 14px;border:5px solid currentColor;border-radius:10px;color:var(--seal);transform:translate(-50%,-50%) rotate(-9deg) scale(2.4);opacity:0;pointer-events:none;background:#f3ecdf14}
+.stamp.on{animation:stamp .55s cubic-bezier(.3,1.6,.5,1) forwards}
+.stamp.trash{color:#c9d2ea;border-style:dashed}
+.stamp.gold{color:var(--gold)}
+@keyframes stamp{to{opacity:1;transform:translate(-50%,-50%) rotate(-9deg) scale(1)}}
+.ink{position:absolute;left:50%;top:62%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(closest-side,#05081acc,#05081a88 55%,transparent);transform:scale(0);opacity:0;pointer-events:none;z-index:1}
+.ink.on{animation:ink 1.4s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes ink{to{transform:scale(1);opacity:1}}
+.deck{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.95fr) minmax(0,1fr);gap:clamp(18px,2.6vw,40px);padding:18px max(3vw,16px) 20px;background:var(--deck);border-top:1px solid var(--line);position:relative;z-index:3}
+.info h2{margin:0;font:800 clamp(24px,2.6vw,32px)/1.08 "Shippori Mincho B1",serif;letter-spacing:-.015em;text-wrap:balance}
+.quote{margin:6px 0 12px;color:var(--mute);font-size:15px}
+.est{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.est span{font-size:13px;color:var(--mute)}
+.est b{font:800 24px/1.1 "Shippori Mincho B1",serif;white-space:nowrap;transition:color .4s}
+.est b.tight{color:var(--sak)}
+.clues{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 10px;perspective:600px}
+.clue{background:#0a1230;border:1px solid var(--line);border-radius:6px;padding:7px 10px;min-height:56px}
+.clue span{display:block;font-size:13px;color:var(--mute)}
+.clue b{display:block;font-size:14px;font-weight:700;line-height:1.25}
+.clue.open{background:var(--paper);color:var(--ink);border-color:var(--paper);animation:flip .5s ease-out}
+.clue.open span{color:#4a5578}
+.clue.bad{background:#2a1530;color:var(--sak);border-color:#5a2a4a}
+.clue.bad span{color:#c79aae}
+.clue.great{background:var(--gold);border-color:var(--gold)}
+@keyframes flip{from{transform:rotateX(90deg)}}
+.btn{border:1px solid var(--line);background:#0a1230;border-radius:999px;padding:10px 18px;min-height:44px;font-size:15px;font-weight:500}
+.btn:hover:not(:disabled){border-color:var(--sak)}
+.btn:disabled{opacity:.4;cursor:default}
+.act{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 18px;align-items:center}
+.hammer{position:relative;width:132px;height:132px;border-radius:50%;border:0;background:var(--seal);color:#fff4ee;display:grid;place-content:center;text-align:center;grid-row:span 2;box-shadow:0 6px 0 #8f2216,0 0 0 6px #e0412f22;transition:transform .12s,box-shadow .12s,background .3s}
+.hammer:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #8f2216}
+.hammer:disabled{background:#3a3f58;box-shadow:0 6px 0 #22263a;cursor:default}
+.hammer.calm{background:var(--paper);color:var(--ink);box-shadow:0 6px 0 #a89e8a}
+.hammer .ring{position:absolute;inset:-10px;width:152px;height:152px;transform:rotate(-90deg);pointer-events:none}
+.ring circle{fill:none;stroke-width:4}
+.ring .track{stroke:#ffffff14}
+.ring .prog{stroke:var(--sak);stroke-linecap:round}
+.hammer small{font-size:13px;opacity:.85}
+.hammer strong{font:800 26px/1.05 "Shippori Mincho B1",serif;white-space:nowrap}
+.bidline span{font-size:13px;color:var(--mute);display:block}
+.bidline b{font:800 clamp(30px,3.2vw,40px)/1 "Shippori Mincho B1",serif;font-variant-numeric:tabular-nums;white-space:nowrap;display:inline-block}
+.bidline b.bump{animation:bump .35s}
+@keyframes bump{40%{transform:scale(1.12);color:var(--sak)}}
+.bidline em{display:block;font-style:normal;font-size:14px;color:var(--mute);margin-top:4px;min-height:21px}
+.side{display:flex;flex-wrap:wrap;gap:8px}
+.caller{grid-column:1/-1;margin:4px 0 0;font:600 17px/1.35 "Shippori Mincho B1",serif;color:var(--sak);min-height:46px}
+.shelf h3{margin:0 0 8px;font:800 18px/1.2 "Shippori Mincho B1",serif}
+.shelf .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px}
+.slot{background:#0a1230;border:1px solid var(--line);border-radius:6px;aspect-ratio:1/1.18;display:grid;grid-template-rows:1fr auto;padding:4px 2px 3px;text-align:center;position:relative}
+.slot svg{width:100%;height:100%}
+.slot b{font-size:13px;line-height:1.2;white-space:nowrap}
+.slot.new{animation:enter .8s cubic-bezier(.2,.9,.25,1.15)}
+.empty{color:var(--mute);font-size:14px;margin:0;grid-column:1/-1}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--paper);color:var(--ink);padding:10px 18px;border-radius:999px;opacity:0;transition:.4s;z-index:9;font-weight:500;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.keys{font-size:13px;color:var(--mute);margin:10px 0 0}
+kbd{font:inherit;border:1px solid var(--line);border-radius:4px;padding:0 5px}
+@media(max-width:1020px){.riv{width:100px}.deck{grid-template-columns:minmax(0,1fr) minmax(290px,.95fr)}.shelf{grid-column:1/-1}.shelf .grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr))}}
+@media(max-width:640px){
+#app{height:auto;grid-template-rows:auto 46svh auto}
+header{gap:8px 16px}.stats{gap:16px;order:3;width:100%;justify-content:space-between}
+.brand h1{font-size:26px}
+.deck{grid-template-columns:minmax(0,1fr);gap:18px}
+.rivals>div{flex-direction:column;gap:6px}.rivals{top:10px}.riv{width:64px}.riv svg{width:30px;height:44px}.riv .halo{width:70px;height:70px}.riv p{padding:2px 7px}.riv p i{display:none}.riv p i+i{display:inline}.riv .tag{font-size:14px;padding:4px 8px;min-width:44px}
+.hammer{width:116px;height:116px}.hammer .ring{width:136px;height:136px}
+.keys{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="brand"><div class="seal" aria-hidden="true">浮世</div><div><h1>Ukiyo</h1><small>Il mercato fluttuante</small></div></div>
+  <div class="stats">
+    <div class="stat"><span>Borsa</span><b id="sWallet">1.000 ryō</b></div>
+    <div class="stat"><span>Bilancio</span><b id="sNet">0</b></div>
+    <div class="stat"><span>Occhio</span><b id="sEye">—</b></div>
+    <div class="stat"><span>Oggetti visti</span><b id="sRound">0</b></div>
+  </div>
+  <div class="ctl">
+    <div class="seg" role="group" aria-label="Modalità"><button id="mQuiete" aria-pressed="true">Quiete</button><button id="mMarea" aria-pressed="false">Marea</button></div>
+    <button class="icon" id="snd" aria-pressed="true">Suono sì</button>
+  </div>
+</header>
+
+<section class="stage" id="stage">
+<svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0a1230"/><stop offset=".65" stop-color="#1a2f62"/><stop offset="1" stop-color="#2b4a86"/></linearGradient>
+    <radialGradient id="moonG"><stop offset=".55" stop-color="#f6eedc"/><stop offset="1" stop-color="#e9dcc0"/></radialGradient>
+    <radialGradient id="halo"><stop offset="0" stop-color="#f6eedc" stop-opacity=".28"/><stop offset="1" stop-color="#f6eedc" stop-opacity="0"/></radialGradient>
+    <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1c3670"/><stop offset="1" stop-color="#0c1532"/></linearGradient>
+    <linearGradient id="wood" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8a5a36"/><stop offset="1" stop-color="#4a2c18"/></linearGradient>
+    <path id="wv" d="M0 0 q30 -14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+    <g id="cloud"><path d="M0 0 h150 a18 18 0 0 0 -18 -18 h-34 a22 22 0 0 0 -40 -6 a16 16 0 0 0 -30 8 h-10 a14 14 0 0 0 -18 16z"/></g>
+  </defs>
+  <rect width="1200" height="620" fill="url(#sky)"/>
+  <g id="stars"></g>
+  <circle cx="600" cy="230" r="300" fill="url(#halo)"/>
+  <circle cx="600" cy="230" r="150" fill="url(#moonG)"/>
+  <circle cx="548" cy="196" r="22" fill="#e2d4b6" opacity=".5"/><circle cx="650" cy="272" r="14" fill="#e2d4b6" opacity=".45"/><circle cx="668" cy="186" r="9" fill="#e2d4b6" opacity=".4"/>
+  <g fill="#2a4580" opacity=".5"><use href="#cloud" x="250" y="150" transform="scale(1.4)" class="w3"/><use href="#cloud" x="560" y="120"/></g>
+  <path d="M-20 470 L140 370 L230 410 L380 300 L470 350 L560 330 L700 400 L800 360 L1000 420 L1220 340 L1220 480 L-20 480Z" fill="#203a72"/>
+  <path d="M-20 480 L90 430 L220 450 L330 400 L520 455 L690 430 L840 452 L980 410 L1220 445 L1220 490 L-20 490Z" fill="#1a3166"/>
+  <path d="M352 318 L380 300 L410 320 L395 316 L382 326 L366 314Z" fill="#c9d4ee" opacity=".8"/>
+  <rect y="478" width="1200" height="142" fill="url(#sea)"/>
+  <path d="M540 486 h120 M520 504 h160 M548 522 h104 M565 540 h70" stroke="#f6eedc" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+  <g fill="none" stroke-linecap="round">
+    <g class="w3"><use href="#wv" x="-60" y="496" stroke="#3a5d9e" stroke-width="2" opacity=".6"/></g>
+    <g class="w2"><use href="#wv" x="-60" y="530" stroke="#4b70b5" stroke-width="2.5" opacity=".55"/></g>
+    <g class="w1"><use href="#wv" x="-60" y="572" stroke="#6b8fd0" stroke-width="3" opacity=".5"/></g>
+  </g>
+  <g id="ripples"></g>
+  <g class="bob">
+    <ellipse cx="600" cy="514" rx="190" ry="16" fill="#0a1230" opacity=".55"/>
+    <path d="M430 478 h340 l-22 30 h-296z" fill="url(#wood)"/>
+    <path d="M430 478 h340 v-8 h-340z" fill="#b07a4c"/>
+    <path d="M470 486 v20 M530 486 v22 M600 486 v22 M670 486 v22 M730 486 v20" stroke="#3a2214" stroke-width="2" opacity=".6"/>
+    <path d="M440 470 v-18 M760 470 v-18" stroke="#3a2214" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="440" cy="444" r="9" fill="#ffb36b"/><circle cx="760" cy="444" r="9" fill="#ffb36b"/>
+    <circle cx="440" cy="444" r="26" fill="#ffb36b" opacity=".18"/><circle cx="760" cy="444" r="26" fill="#ffb36b" opacity=".18"/>
+    <g transform="translate(600 472) scale(1.22)"><g id="item"></g></g>
+  </g>
+  <g fill="none" stroke-linecap="round" class="w2"><use href="#wv" x="-60" y="604" stroke="#8fb0e8" stroke-width="3" opacity=".45"/></g>
+</svg>
+<canvas id="petals"></canvas>
+<div class="rivals" id="rivals"></div>
+<div class="ink" id="ink"></div>
+<div class="stamp" id="stamp">Cash</div>
+<div class="reveal" id="reveal"><span id="rvLbl">Valore reale</span><b id="rv">0</b></div>
+</section>
+
+<section class="deck">
+  <div class="info">
+    <h2 id="name">Teiera in porcellana</h2>
+    <p class="quote" id="quote"></p>
+    <div class="est"><span>Perizia</span><b id="est">—</b></div>
+    <div class="clues" id="clues"></div>
+    <button class="btn" id="insp">Ispeziona</button>
+  </div>
+  <div class="act">
+    <button class="hammer calm" id="hammer"><svg class="ring" viewBox="0 0 152 152"><circle class="track" cx="76" cy="76" r="70"/><circle class="prog" id="ringC" cx="76" cy="76" r="70"/></svg><small id="hTop">Apri</small><strong id="hBig">l'asta</strong></button>
+    <div class="bidline"><span id="pLbl">Base d'asta</span><b id="price">—</b><em id="leader"></em></div>
+    <div class="side"><button class="btn" id="jump" disabled>Rilancio deciso</button><button class="btn" id="pass" disabled>Passo</button></div>
+    <p class="caller" id="caller"></p>
+  </div>
+  <div class="shelf">
+    <h3>Il tuo scaffale</h3>
+    <div class="grid" id="shelf"></div>
+    <p class="keys"><kbd>Spazio</kbd> offri · <kbd>I</kbd> ispeziona · <kbd>J</kbd> rilancio deciso · <kbd>P</kbd> passo</p>
+  </div>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const $=s=>document.getElementById(s);
+const rnd=Math.random;
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const wpick=a=>{let r=rnd(),i=0;for(;i<a.length-1;i++){if((r-=a[i].p)<0)break}return i};
+const gauss=()=>{let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+const fmt=n=>Math.round(n).toLocaleString('it-IT');
+const nice=x=>{const s=x<100?5:x<500?10:x<2000?25:x<6000?50:100;return Math.max(s,Math.round(x/s)*s)};
+const step=p=>p<100?5:p<300?10:p<1000?25:p<3000?50:100;
+
+const MAT={
+ raku:{n:'ceramica raku',m:1,c:['#7a4630','#3a2116','#c07f55'],pat:'drip'},
+ porc:{n:'porcellana',m:1.4,c:['#e9ecf2','#9aa7c2','#ffffff'],pat:'blue'},
+ bronzo:{n:'bronzo',m:1.6,c:['#8a6a3a','#43301a','#dcb46c'],pat:'band'},
+ lacca:{n:'lacca rossa',m:1.8,c:['#a3231c','#4a0d0a','#ea6a55'],pat:'gold'},
+ ottone:{n:'ottone',m:.9,c:['#c9a24a','#6e5418','#f5e09a'],pat:'band'},
+ hinoki:{n:'legno di hinoki',m:.8,c:['#c79a62','#7a5530','#efcb95'],pat:'grain'},
+ giada:{n:'giada',m:2.4,c:['#4f9a7a','#1f4c3b','#a6e6c6'],pat:'none'},
+ argento:{n:'argento',m:2,c:['#b9c0cc','#5d6573','#f6f8fc'],pat:'band'},
+ washi:{n:'carta washi',m:.7,c:['#efe3c8','#b59a6a','#fffaf0'],pat:'ink'},
+ seta:{n:'seta dipinta',m:1.3,c:['#3d5fa8','#1b2d5c','#93b3f2'],pat:'wave'}
+};
+const TYPES=[
+ {k:'vaso',n:'Vaso',b:120,mats:['raku','porc','bronzo','lacca','giada']},
+ {k:'teiera',n:'Teiera',b:90,mats:['raku','porc','bronzo','argento']},
+ {k:'ciotola',n:'Ciotola da tè',b:70,mats:['raku','porc','lacca','giada']},
+ {k:'lanterna',n:'Lanterna',b:60,mats:['washi','bronzo','ottone']},
+ {k:'orologio',n:'Orologio da taschino',b:170,mats:['ottone','argento']},
+ {k:'ventaglio',n:'Ventaglio',b:55,mats:['washi','seta','lacca']},
+ {k:'scrigno',n:'Scrigno',b:110,mats:['lacca','hinoki','argento']},
+ {k:'gatto',n:'Statuetta di gatto',b:80,mats:['porc','bronzo','giada','hinoki']},
+ {k:'rotolo',n:'Rotolo dipinto',b:140,mats:['washi','seta']}
+];
+const ERA=[{n:'Periodo Edo',m:2.3,p:.12},{n:'Periodo Meiji',m:1.6,p:.22},{n:'Periodo Taishō',m:1.2,p:.22},{n:'Periodo Shōwa',m:.85,p:.26},{n:'Moderno',m:.5,p:.18}];
+const COND=[{n:'Integro',m:1.2,p:.25},{n:'Buono stato',m:1,p:.4},{n:"Segni d'uso",m:.65,p:.2},{n:'Kintsugi',m:.85,p:.15}];
+const AUTH={quiete:[{n:'Autentica',m:1,p:.78},{n:'Di un maestro',m:3,p:.06},{n:'Copia',m:.12,p:.16}],marea:[{n:'Autentica',m:1,p:.68},{n:'Di un maestro',m:3.4,p:.08},{n:'Copia',m:.1,p:.24}]};
+const EV=a=>a.reduce((s,x)=>s+x.p*x.m,0);
+const SELLERS=['Un pescatore di Ōsaka','Una maestra in pensione','Due fratelli di Nara','Un monaco di passaggio','Una ragazza con la bici','Un vecchio barcaiolo','Una sarta di Kyoto','Un collezionista stanco'];
+const QUOTES=['«Era nel granaio da sempre.»','«Me l’ha lasciato mia nonna.»','«Spero valga un viaggio.»','«Non so cosa sia, ma è bello.»','«Lo usavo per le chiavi.»','«Trovato a un mercatino, sotto la pioggia.»','«Mio padre giurava fosse antico.»','«Mi serve spazio in casa.»'];
+const RIVS=[
+ {id:'seta',n:'Mercante di seta',sh:'Seta',s:.16,m:.84,naive:.1,c:'#f4a7b5'},
+ {id:'ko',n:'Vedova Kō',sh:'Kō',s:.28,m:.95,naive:.3,c:'#f2c35e'},
+ {id:'tanuki',n:'Monaco Tanuki',sh:'Tanuki',s:.42,m:.82,naive:.55,c:'#8fd6c4'}
+];
+const YOU={id:'you',n:'Tu',sh:'Tu',c:'#f3ecdf'};
+const CLUE=[{k:'era',n:'Epoca'},{k:'cond',n:'Stato'},{k:'auth',n:'Firma'}];
+
+let S={wallet:1000,gifts:0,round:0,wins:0,good:0,best:0,shelf:[],mode:'quiete',sound:true};
+let it=null,phase='perizia',A=null,tm=[];
+const clr=()=>{tm.forEach(clearTimeout);tm=[]};
+const later=(f,d)=>tm.push(setTimeout(f,d));
+const save=()=>{try{localStorage.setItem('ukiyo-v1',JSON.stringify(S))}catch(e){}};
+const load=()=>{try{const d=JSON.parse(localStorage.getItem('ukiyo-v1')||'null');if(d&&typeof d.wallet==='number')Object.assign(S,d)}catch(e){}};
+
+/* ---------- audio ---------- */
+let ac=null;
+const au=()=>{if(!S.sound)return null;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}};
+function tone(f,d,type,v,t0){const a=au();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+(t0||0);o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.05)}
+const SFX={
+ you:()=>{tone(587,.6,'triangle',.08);tone(880,.5,'sine',.035,.02)},
+ riv:()=>{tone(392,.5,'triangle',.06)},
+ flip:()=>{tone(1318,.25,'sine',.04);tone(1760,.2,'sine',.02,.05)},
+ tick:()=>tone(1046,.12,'sine',.03),
+ gong:()=>{[98,147,196,294].forEach((f,i)=>tone(f,2.8-i*.4,'sine',.16/(i+1)))},
+ cash:()=>[523,587,659,784,880,1046].forEach((f,i)=>tone(f,1,'triangle',.06,.25+i*.09)),
+ trash:()=>{tone(110,1.4,'sine',.16,.2);tone(73,1.6,'sine',.1,.28)},
+ open:()=>[392,523,659].forEach((f,i)=>tone(f,.9,'sine',.05,i*.12))
+};
+
+/* ---------- item drawing ---------- */
+function shape(k,c0,c1,c2,G,D){
+ const P=(a,r)=>{const t=a*Math.PI/180;return (r*Math.cos(t)).toFixed(1)+','+(-30+r*Math.sin(t)).toFixed(1)};
+ switch(k){
+ case'vaso':return{d:'M-26,-176 C-28,-150 -20,-142 -42,-124 C-86,-92 -84,-32 -46,-8 L46,-8 C84,-32 86,-92 42,-124 C20,-142 28,-150 26,-176 Z',pre:'',post:`<ellipse cy="-176" rx="27" ry="6" fill="${c1}"/><ellipse cy="-176" rx="19" ry="3.5" fill="#000" opacity=".5"/><rect x="-38" y="-10" width="76" height="10" rx="2" fill="${c1}"/>`};
+ case'teiera':return{d:'M-74,-72 A74,60 0 1 0 74,-72 A74,60 0 1 0 -74,-72 Z',pre:`<path d="M58,-86 C92,-96 98,-128 120,-142 L128,-133 C110,-116 106,-74 64,-44 Z" fill="${D}"/><path d="M-54,-116 C-46,-198 46,-198 54,-116" fill="none" stroke="${c1}" stroke-width="9" stroke-linecap="round"/>`,post:`<ellipse cy="-130" rx="34" ry="9" fill="${c1}"/><ellipse cy="-133" rx="28" ry="6" fill="${G}"/><circle cy="-143" r="9" fill="${G}"/><rect x="-40" y="-14" width="80" height="14" rx="4" fill="${c1}"/>`};
+ case'ciotola':return{d:'M-94,-98 C-92,-38 -54,-14 -30,-14 L30,-14 C54,-14 92,-38 94,-98 Z',pre:'',post:`<ellipse cy="-98" rx="94" ry="15" fill="${c1}"/><ellipse cy="-97" rx="86" ry="11" fill="#000" opacity=".35"/><ellipse cy="-95" rx="64" ry="7" fill="#7fa65a" opacity=".55"/><rect x="-30" y="-15" width="60" height="15" rx="3" fill="${c1}"/>`};
+ case'lanterna':return{d:'M-56,-150 C-63,-110 -63,-70 -56,-36 C-50,-24 50,-24 56,-36 C63,-70 63,-110 56,-150 C50,-164 -50,-164 -56,-150 Z',pre:`<ellipse cy="-92" rx="120" ry="96" fill="#ffb36b" opacity=".16"/>`,post:`<rect x="-38" y="-172" width="76" height="14" rx="3" fill="#2b1b14"/><rect x="-38" y="-32" width="76" height="14" rx="3" fill="#2b1b14"/><path d="M0,-172 V-196 M-26,-18 V0 M26,-18 V0" stroke="#2b1b14" stroke-width="4"/><circle cy="-202" r="7" fill="none" stroke="#2b1b14" stroke-width="3"/>`,ribs:1};
+ case'orologio':{let t='';for(let i=0;i<12;i++){const a=i*30*Math.PI/180,r1=i%3?52:46;t+=`<path d="M${(Math.sin(a)*r1).toFixed(1)},${(-96-Math.cos(a)*r1).toFixed(1)} L${(Math.sin(a)*56).toFixed(1)},${(-96-Math.cos(a)*56).toFixed(1)}" stroke="#2a2a33" stroke-width="${i%3?2:3.5}"/>`}
+  return{d:'M-74,-96 A74,74 0 1 0 74,-96 A74,74 0 1 0 -74,-96 Z',pre:`<path d="M-44,0 L-22,-32 L22,-32 L44,0 Z" fill="#3a2518"/><circle cy="-194" r="12" fill="none" stroke="${c1}" stroke-width="5"/><rect x="-10" y="-186" width="20" height="18" rx="3" fill="${G}"/>`,post:`<circle cy="-96" r="60" fill="#f7f1e3"/><circle cy="-96" r="60" fill="none" stroke="${c1}" stroke-width="3"/>${t}<path d="M0,-96 V-140 M0,-96 L30,-80" stroke="#1d1d24" stroke-width="4" stroke-linecap="round"/><circle cy="-96" r="5" fill="#d33b2c"/><path d="M-38,-136 A60,60 0 0 1 10,-154" stroke="#fff" stroke-width="5" fill="none" opacity=".6" stroke-linecap="round"/>`}}
+ case'ventaglio':{let r='';for(let a=206;a<=334;a+=16)r+=`<path d="M${P(a,30)} L${P(a,150)}" stroke="${c1}" stroke-width="1.6" opacity=".55"/>`;
+  return{d:`M${P(200,30)} L${P(200,152)} A152,152 0 0 1 ${P(340,152)} L${P(340,30)} A30,30 0 0 0 ${P(200,30)} Z`,pre:`<path d="M-30,0 L0,-30 L30,0" stroke="#2b1b14" stroke-width="5" fill="none"/>`,post:`<path d="M${P(200,0)} L${P(200,156)} M${P(340,0)} L${P(340,156)}" stroke="#2b1b14" stroke-width="7" stroke-linecap="round"/><path d="M${P(200,140)} A140,140 0 0 1 ${P(340,140)}" stroke="${c1}" stroke-width="5" fill="none" opacity=".6"/><circle cy="-30" r="7" fill="#e3b85a"/>`,extra:r}}
+ case'scrigno':return{d:'M-86,-94 L86,-94 L86,-10 L-86,-10 Z',pre:'',post:`<path d="M-92,-92 L-92,-124 Q-92,-140 -76,-140 L76,-140 Q92,-140 92,-124 L92,-92 Z" fill="${D}"/><path d="M-80,-134 H80" stroke="${c2}" stroke-width="2" opacity=".5"/><rect x="-92" y="-96" width="184" height="6" fill="${c1}"/><rect x="-13" y="-106" width="26" height="28" rx="4" fill="#e3b85a"/><circle cy="-91" r="4" fill="#5a3d10"/><rect x="-80" y="-10" width="18" height="10" fill="${c1}"/><rect x="62" y="-10" width="18" height="10" fill="${c1}"/>`};
+ case'gatto':return{d:'M-54,-6 C-68,-62 -52,-110 0,-112 C52,-110 68,-62 54,-6 Z',pre:`<ellipse cx="54" cy="-150" rx="14" ry="26" fill="${G}" transform="rotate(12 54 -150)"/>`,post:`<path d="M-40,-170 L-32,-206 L-8,-186 Z M40,-170 L32,-206 L8,-186 Z" fill="${G}"/><path d="M-32,-176 L-29,-196 L-16,-184 Z M32,-176 L29,-196 L16,-184 Z" fill="#f4a7b5" opacity=".8"/><circle cy="-148" r="45" fill="${G}"/><path d="M-24,-152 q9,-8 18,0 M6,-152 q9,-8 18,0" stroke="#1d1d24" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M-5,-138 h10 l-5,6z" fill="#e06a7a"/><path d="M-14,-132 h-26 M-14,-127 l-24,6 M14,-132 h26 M14,-127 l24,6" stroke="#1d1d24" stroke-width="1.4" opacity=".6"/><path d="M-40,-110 Q0,-94 40,-110" stroke="#d33b2c" stroke-width="8" fill="none" stroke-linecap="round"/><circle cy="-98" r="8" fill="#e3b85a"/><ellipse cx="-24" cy="-8" rx="16" ry="8" fill="${c1}"/><ellipse cx="24" cy="-8" rx="16" ry="8" fill="${c1}"/>`};
+ case'rotolo':return{d:'M-62,-198 L62,-198 L62,-26 L-62,-26 Z',pre:`<path d="M-40,-206 L0,-230 L40,-206" stroke="#2b1b14" stroke-width="2" fill="none"/>`,post:`<rect x="-46" y="-182" width="92" height="138" fill="#f1e6cc"/><circle cx="18" cy="-152" r="12" fill="#d8432f"/><path d="M-46,-82 L-20,-122 L-6,-104 L14,-134 L46,-86 L46,-44 L-46,-44 Z" fill="#2f4a6e" opacity=".88"/><path d="M-6,-104 L14,-134 L24,-118 L14,-122Z" fill="#fff" opacity=".8"/><path d="M-46,-62 Q-24,-72 0,-62 T46,-62 V-44 H-46Z" fill="#6d8fb5"/><rect x="-74" y="-207" width="148" height="10" rx="5" fill="#2b1b14"/><rect x="-72" y="-30" width="144" height="11" rx="5" fill="#2b1b14"/>`};
+ }
+}
+function pattern(p,c0,c1,c2,sd){
+ const o=(sd%40)-20;
+ switch(p){
+ case'blue':return`<path d="M-100,${-118+o/4} q25,-14 50,0 t50,0 t50,0 t50,0" stroke="#2b52a8" stroke-width="5" fill="none"/><path d="M-100,-56 q25,-12 50,0 t50,0 t50,0 t50,0" stroke="#2b52a8" stroke-width="4" fill="none"/>${[-50,0,50].map(x=>`<circle cx="${x+o/2}" cy="-86" r="9" fill="none" stroke="#2b52a8" stroke-width="3"/><circle cx="${x+o/2}" cy="-86" r="3" fill="#2b52a8"/>`).join('')}`;
+ case'gold':return`<path d="M-100,-60 C-60,-90 -20,-40 20,-70 S80,-90 110,-60" stroke="#e9c46a" stroke-width="2.5" fill="none"/>${[-60,-24,14,48].map((x,i)=>`<circle cx="${x+o/3}" cy="${-74-i%2*14}" r="${4+i%2*2}" fill="#e9c46a"/>`).join('')}`;
+ case'band':return`<rect x="-120" y="-100" width="240" height="18" fill="${c1}" opacity=".5"/><rect x="-120" y="-80" width="240" height="2" fill="${c2}" opacity=".7"/><rect x="-120" y="-44" width="240" height="6" fill="${c1}" opacity=".35"/>`;
+ case'drip':return`<path d="M-120,-240 H120 V-120 C100,-120 96,-96 84,-96 C70,-96 70,-128 50,-128 C30,-128 34,-84 18,-84 C0,-84 4,-130 -16,-130 C-36,-130 -30,-100 -48,-100 C-66,-100 -64,-124 -84,-124 C-100,-124 -104,-116 -120,-116 Z" fill="${c2}" opacity=".55"/>`;
+ case'grain':return[-150,-120,-90,-60,-30].map((y,i)=>`<path d="M-120,${y+o/5} C-60,${y-14} 0,${y+12} 120,${y-6}" stroke="${c1}" stroke-width="2" fill="none" opacity=".4"/>`).join('');
+ case'ink':return`<path d="M-90,-60 C-60,-110 -40,-70 -20,-104 C0,-136 20,-80 50,-112 C70,-130 90,-90 110,-100" stroke="#2a2a33" stroke-width="5" fill="none" opacity=".55" stroke-linecap="round"/><circle cx="${30+o}" cy="-130" r="10" fill="#d8432f" opacity=".85"/>`;
+ case'wave':{let s='';for(let y=-170;y<0;y+=22)for(let x=-130;x<140;x+=34)s+=`<path d="M${x+(y/22%2?17:0)-14},${y} a14,14 0 0 1 28,0" stroke="${c2}" stroke-width="2" fill="none" opacity=".55"/>`;return s}
+ default:return`<ellipse cx="-24" cy="-110" rx="22" ry="40" fill="#fff" opacity=".2"/>`;
+ }
+}
+function drawItem(x,id,rv){
+ const T=TYPES[x.tk],M=MAT[x.mk],[c0,c1,c2]=M.c,G=`url(#${id}g)`,D=`url(#${id}d)`,sh=shape(T.k,c0,c1,c2,G,D);
+ const defs=`<linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="${c1}"/><stop offset=".3" stop-color="${c2}"/><stop offset=".6" stop-color="${c0}"/><stop offset="1" stop-color="${c1}"/></linearGradient><linearGradient id="${id}d" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${c2}"/><stop offset=".4" stop-color="${c0}"/><stop offset="1" stop-color="${c1}"/></linearGradient><clipPath id="${id}c"><path d="${sh.d}"/></clipPath>`;
+ let ribs='';if(sh.ribs)for(let y=-150;y<-36;y+=14)ribs+=`<path d="M-80,${y} H80" stroke="${c1}" stroke-width="1.6" opacity=".45"/>`;
+ const CR='M-34,-160 L-16,-128 L-28,-102 L-4,-78 L-14,-52 L8,-26';
+ let crack='';
+ if(rv.cond&&x.c===2)crack=`<path d="${CR}" stroke="#140c0c" stroke-width="2.6" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l20,-6 M-4,-78 l-18,8" stroke="#140c0c" stroke-width="1.6"/>`;
+ if(rv.cond&&x.c===3)crack=`<path d="${CR}" stroke="#f2c35e" stroke-width="9" fill="none" opacity=".25" stroke-linejoin="round"/><path d="${CR}" stroke="#f7d27a" stroke-width="3.2" fill="none" stroke-linejoin="round"/><path d="M-16,-128 l24,-8 M-4,-78 l-22,10" stroke="#f7d27a" stroke-width="2.2"/>`;
+ let seal='';
+ if(rv.auth){const a=x.a;seal=a===2?`<g transform="translate(62,-34) rotate(8)"><rect x="-24" y="-11" width="48" height="22" rx="3" fill="#c9d2ea"/><text y="5" text-anchor="middle" font-size="13" font-family="Zen Kaku Gothic New,sans-serif" font-weight="700" fill="#14244c">copia</text></g>`:`<g transform="translate(64,-34) rotate(-6)">${a===1?'<rect x="-15" y="-15" width="30" height="30" rx="4" fill="none" stroke="#f2c35e" stroke-width="3"/>':''}<rect x="-11" y="-11" width="22" height="22" rx="3" fill="#d33b2c"/><text y="5" text-anchor="middle" font-size="14" font-family="Shippori Mincho B1,serif" font-weight="800" fill="#fff4ee">印</text></g>`}
+ return`<defs>${defs}</defs><ellipse cy="2" rx="86" ry="9" fill="#000" opacity=".35"/>${sh.pre}<path d="${sh.d}" fill="${G}"/><g clip-path="url(#${id}c)">${pattern(M.pat,c0,c1,c2,x.seed)}${ribs}${sh.extra||''}<path d="M-120,-240 H-40 C-70,-160 -70,-60 -40,0 H-120Z" fill="#fff" opacity=".07"/></g>${sh.post}<g clip-path="url(#${id}c)">${crack}</g>${seal}`;
+}
+
+/* ---------- economy ---------- */
+const nameOf=x=>{const T=TYPES[x.tk];return T.k==='rotolo'?`Rotolo dipinto su ${x.mk==='seta'?'seta':'carta washi'}`:`${T.n} in ${MAT[x.mk].n}`};
+function makeItem(){
+ const tk=Math.floor(rnd()*TYPES.length),T=TYPES[tk],mk=pick(T.mats),au=AUTH[S.mode];
+ const x={tk,mk,e:wpick(ERA),c:wpick(COND),a:wpick(au),seed:Math.floor(rnd()*1e6),luck:.82+rnd()*.42,mult:S.mode==='marea'?1.9:1,known:{}};
+ x.val=Math.max(5,Math.round(T.b*MAT[mk].m*ERA[x.e].m*COND[x.c].m*au[x.a].m*x.luck*x.mult));
+ x.clues=CLUE.map(c=>c.k).sort(()=>rnd()-.5);
+ x.seller=pick(SELLERS);x.quote=pick(QUOTES);
+ return x;
+}
+function estimate(x){
+ const T=TYPES[x.tk],k=x.known,au=AUTH[S.mode];
+ let e=T.b*MAT[x.mk].m*x.mult*1.03;
+ e*=k.era?ERA[x.e].m:EV(ERA);e*=k.cond?COND[x.c].m:EV(COND);e*=k.auth?au[x.a].m:EV(au);
+ const hid=3-Object.keys(k).length,sp=.1+.17*hid;
+ return[nice(e*(1-sp)),nice(e*(1+sp))];
+}
+const publicEst=x=>{const k=x.known;x.known={};const r=estimate(x);x.known=k;return r};
+const fee=x=>{const [l,h]=publicEst(x);return Math.max(5,nice((l+h)/2*.04))};
+
+/* ---------- rendering ---------- */
+function rivalsHTML(){const L=r=>`<div class="riv" id="r-${r.id}" style="--c:${r.c}"><div class="halo"></div><svg viewBox="0 0 60 84"><path d="M30 0v10" stroke="#0a0f1f" stroke-width="2"/><rect x="17" y="9" width="26" height="7" rx="2" fill="#2b1b14"/><path d="M11 22 C6 38 6 56 11 70 C15 77 45 77 49 70 C54 56 54 38 49 22 C45 13 15 13 11 22Z" fill="${r.c}"/><path d="M8 34h44M7 46h46M8 58h44" stroke="#0a0f1f" stroke-opacity=".25"/><path d="M16 26 C12 40 12 54 16 66" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="17" y="72" width="26" height="7" rx="2" fill="#2b1b14"/></svg><p><i>${r.n}</i><i>${r.sh}</i></p><span class="tag">—</span></div>`;return`<div>${L(RIVS[0])}${L(RIVS[1])}</div><div>${L(RIVS[2])}${L(YOU)}</div>`}
+function stars(){let s='',v=7;for(let i=0;i<70;i++){v=v*16807%2147483647;const x=v%1200;v=v*16807%2147483647;const y=v%330;v=v*16807%2147483647;s+=`<circle cx="${x}" cy="${y}" r="${(v%10)/10+.5}" fill="#f6eedc" opacity="${.25+(v%5)/10}"/>`}$('stars').innerHTML=s}
+function drawStage(enter){
+ const rv=phase==='esito'?{cond:1,auth:1}:{cond:!!it.known.cond,auth:!!it.known.auth};
+ $('item').innerHTML=`<g class="${enter?'enter':''}" id="itemIn">${drawItem(it,'m'+it.seed,rv)}</g>`;
+}
+function ripple(){const g=$('ripples');g.innerHTML=[0,1,2].map(i=>`<ellipse cx="600" cy="500" rx="120" ry="14" fill="none" stroke="#bcd0f5" stroke-width="2" class="ripple" style="animation-delay:${i*.25}s"/>`).join('');setTimeout(()=>g.innerHTML='',2400)}
+function renderStats(){
+ $('sWallet').textContent=fmt(S.wallet)+' ryō';
+ const net=S.wallet-1000-S.gifts;$('sNet').textContent=(net>0?'+':'')+fmt(net);$('sNet').className=net>0?'pos':net<0?'neg':'';
+ $('sEye').textContent=S.wins?Math.round(S.good/S.wins*100)+'%':'—';
+ $('sRound').textContent=fmt(S.round);
+ $('mQuiete').setAttribute('aria-pressed',S.mode==='quiete');$('mMarea').setAttribute('aria-pressed',S.mode==='marea');
+ $('snd').textContent=S.sound?'Suono sì':'Suono no';$('snd').setAttribute('aria-pressed',S.sound);
+}
+function renderInfo(){
+ $('name').textContent=nameOf(it);
+ $('quote').textContent=`${it.seller}: ${it.quote}`;
+ const [l,h]=estimate(it),all=phase==='esito';
+ $('est').textContent=`${fmt(l)} – ${fmt(h)} ryō`;$('est').className=Object.keys(it.known).length>1?'tight':'';
+ $('clues').innerHTML=CLUE.map(c=>{const open=all||it.known[c.k];let v='?',cls='';
+  if(open){if(c.k==='era'){v=ERA[it.e].n;cls=it.e===0?'great':it.e===4?'bad':''}else if(c.k==='cond'){v=COND[it.c].n;cls=it.c===0?'great':it.c===2?'bad':''}else{v=AUTH[S.mode][it.a].n;cls=it.a===1?'great':it.a===2?'bad':''}}
+  return`<div class="clue ${open?'open':''} ${cls}" data-k="${c.k}"><span>${c.n}</span><b>${v}</b></div>`}).join('');
+ const left=it.clues.filter(k=>!it.known[k]).length;
+ $('insp').disabled=phase!=='perizia'||!left||S.wallet<fee(it);
+ $('insp').textContent=phase!=='perizia'?'Perizia chiusa':left?`Ispeziona · ${fmt(fee(it))} ryō`:'Tutto esaminato';
+}
+function renderAct(){
+ const h=$('hammer'),b=$('price');
+ h.classList.toggle('calm',phase!=='asta');
+ if(phase==='perizia'){$('hTop').textContent='Apri';$('hBig').textContent="l'asta";h.disabled=false;$('pLbl').textContent="Base d'asta";b.textContent=fmt(openPrice())+' ryō';$('leader').textContent='Studia l’oggetto, poi batti il martello.';$('jump').disabled=$('pass').disabled=true}
+ else if(phase==='asta'){const nx=next(),mine=A.leader==='you';$('pLbl').textContent=A.leader?'Offerta attuale':'Si parte da';b.textContent=fmt(A.leader?A.price:A.open)+' ryō';
+  $('leader').textContent=mine?'Sei in testa.':A.leader?`In testa: ${RIVS.find(r=>r.id===A.leader).n}`:'Nessuna offerta, per ora.';
+  const can=!mine&&!A.passed&&S.wallet>=nx;h.disabled=!can;$('hTop').textContent=A.passed?'Hai passato':mine?'In testa':'Offri';$('hBig').textContent=A.passed?'—':fmt(mine?A.price:nx);
+  const jp=nx+2*step(nx);$('jump').disabled=mine||A.passed||S.wallet<jp;$('jump').textContent=`Salta a ${fmt(jp)}`;$('pass').disabled=mine||A.passed}
+ else{$('hTop').textContent='Prossimo';$('hBig').textContent='oggetto';h.disabled=false;$('jump').disabled=$('pass').disabled=true;$('jump').textContent='Rilancio deciso'}
+}
+function renderRivals(){YOU.out=!!A&&A.passed;[...RIVS,YOU].forEach(r=>{const el=$('r-'+r.id);if(!el)return;el.classList.toggle('lead',!!A&&A.leader===r.id);el.classList.toggle('out',!!A&&!!r.out);el.querySelector('.tag').textContent=A&&A.leader===r.id?fmt(A.price):'—'})}
+function renderShelf(fresh){
+ const g=$('shelf');if(!S.shelf.length){g.innerHTML='<p class="empty">Gli oggetti che vinci finiscono qui, con il loro guadagno.</p>';return}
+ g.innerHTML=S.shelf.slice(0,12).map((x,i)=>{const p=x.val-x.price;return`<div class="slot ${fresh&&!i?'new':''}" title="${nameOf(x)}: pagato ${fmt(x.price)}, valeva ${fmt(x.val)}"><svg viewBox="-112 -236 224 248">${drawItem(x,'s'+i+'_'+x.seed,{cond:1,auth:1})}</svg><b class="${p>=0?'pos':'neg'}">${p>=0?'+':''}${fmt(p)}</b></div>`}).join('');
+}
+const say=t=>{$('caller').textContent=t};
+const toast=t=>{const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),3200)};
+function ring(T){const c=$('ringC'),L=2*Math.PI*70;c.style.strokeDasharray=L;c.style.transition='none';c.style.strokeDashoffset=0;c.getBoundingClientRect();if(T){c.style.transition=`stroke-dashoffset ${T}ms linear`;c.style.strokeDashoffset=L}else c.style.strokeDashoffset=L}
+function bump(){const b=$('price');b.classList.remove('bump');b.getBoundingClientRect();b.classList.add('bump')}
+function countUp(el,to,ms){const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/ms),e=1-(1-k)**3;el.textContent=fmt(to*e)+' ryō';if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+
+/* ---------- petals ---------- */
+const cv=$('petals'),cx=cv.getContext('2d'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let PW=0,PH=0,pts=[];
+const fitCv=()=>{const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);PW=r.width;PH=r.height;cv.width=PW*d;cv.height=PH*d;cx.setTransform(d,0,0,d,0,0)};
+const cvObs=new ResizeObserver(fitCv);cvObs.observe(cv);
+const petal=(x,y,burst,col)=>({x,y,vx:burst?(rnd()-.5)*7:-.3-rnd()*.6,vy:burst?-rnd()*6-1:.4+rnd()*.6,r:burst?3+rnd()*4:3+rnd()*3,a:rnd()*6,va:(rnd()-.5)*.08,life:burst?1:2,col:col||(rnd()<.8?'#f4a7b5':'#f8d3da')});
+for(let i=0;i<26;i++)pts.push(petal(rnd()*1400,rnd()*700));
+function burst(cols){for(let i=0;i<70;i++)pts.push(petal(PW/2,PH*.62,true,pick(cols)))}
+function tick(){cx.clearRect(0,0,PW,PH);pts=pts.filter(p=>{p.x+=p.vx+Math.sin(p.a)*.4;p.y+=p.vy;p.a+=p.va;if(p.life===1){p.vy+=.12;p.vx*=.985;if(p.y>PH+20)return false}else{if(p.y>PH+10){p.y=-10;p.x=rnd()*PW*1.2}if(p.x<-20)p.x=PW+10}
+ cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.col;cx.globalAlpha=p.life===1?.95:.6;cx.beginPath();cx.ellipse(0,0,p.r,p.r*.55,0,0,7);cx.fill();cx.restore();return true});requestAnimationFrame(tick)}
+if(!reduce)requestAnimationFrame(tick);
+
+/* ---------- round flow ---------- */
+const openPrice=()=>{const [l]=publicEst(it);return nice(l*.4)};
+const next=()=>A.leader?A.price+step(A.price):A.open;
+const beat=()=>A.fast?1500:S.mode==='marea'?3400:6200;
+
+function newRound(first){
+ clr();
+ if(!first&&S.wallet<150){S.wallet+=400;S.gifts+=400;toast('La corrente ti porta 400 ryō. Il mercato non chiude mai.')}
+ S.round++;it=makeItem();phase='perizia';A=null;RIVS.forEach(r=>r.out=false);
+ ['stamp','ink','reveal'].forEach(k=>$(k).className=k);
+ drawStage(true);ripple();ring(0);
+ say(pick(['Una barca attracca al pontile.','La luna illumina il prossimo lotto.','Arriva qualcosa avvolto nella seta.','Il banditore solleva la lanterna.']));
+ renderInfo();renderAct();renderRivals();renderStats();save();
+}
+function inspect(){
+ if(phase!=='perizia')return;const k=it.clues.find(k=>!it.known[k]);if(!k)return;const f=fee(it);if(S.wallet<f)return;
+ S.wallet-=f;it.fees=(it.fees||0)+f;it.known[k]=1;SFX.flip();
+ const lines={era:'Il perito gira l’oggetto alla luce: ',cond:'Lo sfiora con le dita: ',auth:'Cerca il sigillo sul fondo: '};
+ const v=k==='era'?ERA[it.e].n:k==='cond'?COND[it.c].n:AUTH[S.mode][it.a].n;
+ say(lines[k]+v.toLowerCase()+'.');
+ if(k!=='era')drawStage(false);
+ renderInfo();renderAct();renderStats();save();
+}
+function startAuction(){
+ if(phase!=='perizia')return;phase='asta';SFX.open();
+ const pe=publicEst(it),pm=(pe[0]+pe[1])/2;
+ RIVS.forEach(r=>{const per=it.val*(1-r.naive)+pm*r.naive;r.max=per*Math.exp(r.s*gauss())*r.m*(rnd()<.07?1.5:1);r.out=false});
+ A={open:openPrice(),price:0,leader:null,passed:false,fast:false,n:0};
+ say(`Si parte da ${fmt(A.open)}. Chi offre?`);
+ renderInfo();renderAct();renderRivals();afterBid();
+}
+function afterBid(){
+ clr();const T=beat();A.t0=performance.now();ring(T);
+ later(()=>{if(A.leader){say('Uno…');SFX.tick()}},T*.36);
+ later(()=>{if(A.leader){say('Due…');SFX.tick()}},T*.7);
+ later(hammer,T);
+ const d=A.fast?300+rnd()*350:S.mode==='marea'?500+rnd()*1000:1000+rnd()*T*.4;
+ later(rivalTry,d);
+}
+function rivalTry(){
+ if(phase!=='asta')return;const nx=next();
+ RIVS.forEach(r=>{if(A.leader!==r.id&&r.max<nx&&!r.out){r.out=true}});renderRivals();
+ const c=RIVS.filter(r=>A.leader!==r.id&&r.max>=nx);if(!c.length)return;
+ if(!A.fast&&rnd()<.18){const rest=A.t0+beat()*.82-performance.now();if(rest>200){later(rivalTry,rest);return}}
+ let tot=c.reduce((s,r)=>s+r.max-nx+1,0),z=rnd()*tot,r=c[0];for(const q of c){if((z-=q.max-nx+1)<0){r=q;break}}
+ bid(r.id,nx);
+}
+function bid(who,amt){
+ A.price=amt;A.leader=who;A.n++;bump();
+ {const el=$('r-'+who);el.classList.remove('pulse');el.getBoundingClientRect();el.classList.add('pulse')}
+ if(who==='you'){SFX.you();say(pick(['Offerta dal pontile.','Il banditore annuisce verso di te.','Una nuova offerta, decisa.']))}
+ else{SFX.riv();const r=RIVS.find(r=>r.id===who);say(`${r.n} alza la lanterna: ${fmt(amt)}.`)}
+ renderAct();renderRivals();afterBid();
+}
+function playerBid(amt){if(phase!=='asta'||A.passed||A.leader==='you')return;amt=amt||next();if(S.wallet<amt){toast('La borsa non basta per questa offerta.');return}au();bid('you',amt)}
+function pass(){if(phase!=='asta'||A.leader==='you'||A.passed)return;A.passed=true;A.fast=true;say('Lasci scorrere la corrente.');renderAct();afterBid()}
+function hammer(){
+ clr();phase='esito';ring(0);SFX.gong();
+ const st=$('stamp'),you=A.leader==='you',fees=it.fees||0;let txt,cls='',note;
+ if(you){S.wallet+=it.val-A.price;S.wins++;const p=it.val-A.price-fees;if(p>0)S.good++;S.best=Math.max(S.best,p);
+  S.shelf.unshift({tk:it.tk,mk:it.mk,e:it.e,c:it.c,a:it.a,seed:it.seed,price:A.price,val:it.val});S.shelf=S.shelf.slice(0,24);
+  txt=p>=0?'Cash':'Trash';cls=p>=0?'':'trash';
+  note=p>=0?`Aggiudicato a te per ${fmt(A.price)}. Rivenduto a ${fmt(it.val)}: ${fmt(p)} ryō di guadagno.`:`Aggiudicato a te per ${fmt(A.price)}. Valeva ${fmt(it.val)}: ${fmt(-p)} ryō persi nella corrente.`}
+ else if(A.leader){const r=RIVS.find(r=>r.id===A.leader),d=it.val-A.price;txt=d>0?'Sfumato':'Schivato';cls=d>0?'gold':'trash';
+  note=d>0?`${r.n} se lo aggiudica a ${fmt(A.price)}. Valeva ${fmt(it.val)}: un affare per lui.`:`${r.n} paga ${fmt(A.price)}. Valeva ${fmt(it.val)}: hai schivato una patacca.`}
+ else{txt='Invenduto';cls='trash';note=`Nessuno ha offerto. Valeva ${fmt(it.val)}.`}
+ st.textContent=txt;st.className='stamp '+cls;st.getBoundingClientRect();
+ setTimeout(()=>{st.classList.add('on');$('reveal').classList.add('on');countUp($('rv'),it.val,1100);
+  if(txt==='Cash'){SFX.cash();burst(['#f2c35e','#f4a7b5','#fff2c8','#e0412f'])}else if(txt==='Trash'){SFX.trash();$('ink').classList.add('on');$('itemIn')&&$('itemIn').classList.add('dull')}else if(txt==='Sfumato')SFX.riv()},450);
+ $('rvLbl').textContent=you?'Rivenduto a':'Valore reale';
+ drawStage(false);say(note);
+ renderInfo();renderAct();renderRivals();renderShelf(you);renderStats();save();
+}
+function primary(){au();if(phase==='perizia')startAuction();else if(phase==='asta')playerBid();else{const g=$('itemIn');if(g&&!reduce){g.classList.add('leave');setTimeout(()=>newRound(),500)}else newRound()}}
+
+/* ---------- events ---------- */
+$('hammer').addEventListener('click',primary);
+$('insp').addEventListener('click',()=>{au();inspect()});
+$('jump').addEventListener('click',()=>{const nx=next();playerBid(nx+2*step(nx))});
+$('pass').addEventListener('click',pass);
+$('mQuiete').addEventListener('click',()=>setMode('quiete'));
+$('mMarea').addEventListener('click',()=>setMode('marea'));
+$('snd').addEventListener('click',()=>{S.sound=!S.sound;renderStats();save();if(S.sound)SFX.flip()});
+function setMode(m){if(S.mode===m)return;S.mode=m;renderStats();save();toast(m==='marea'?'Marea: lotti più ricchi, più copie, martello rapido.':'Quiete: martello lento, tempo per respirare.');if(phase!=='asta'){newRound()}}
+addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea'))return;const k=e.key.toLowerCase();
+ if(k===' '||k==='enter'){if(document.activeElement&&document.activeElement.tagName==='BUTTON'&&k==='enter')return;e.preventDefault();primary()}
+ else if(k==='i')inspect();else if(k==='p')pass();else if(k==='j'&&phase==='asta'){const nx=next();playerBid(nx+2*step(nx))}});
+
+function start(d){
+ load();if(d&&typeof d.wallet==='number')Object.assign(S,d);
+ $('rivals').innerHTML=rivalsHTML();stars();renderShelf(false);newRound(true);
+}
+window.claude?.hot?.snapshot?.(()=>S);
+window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+}
+</script>
+</body>
+</html>
